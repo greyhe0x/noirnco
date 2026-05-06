@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack --yes)"
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack --yes)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Read(//tmp/**)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(pkill -f \"next dev\")",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(kill 22641)",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__0opmy07._.css\")",
+      "Bash(grep -A2 \"::before, ::after { box-sizing\")"
     ]
   }
 }
