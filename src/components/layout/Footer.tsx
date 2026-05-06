@@ -24,9 +24,9 @@ export function Footer() {
               <Image
                 src="/logo.png"
                 alt={BRAND.name}
-                width={140}
-                height={44}
-                className="h-10 w-auto object-contain brightness-0 invert"
+                width={880}
+                height={1100}
+                className="h-10 w-auto brightness-0 invert"
               />
             </div>
             <p className="text-gray-400 font-body text-body-sm leading-relaxed max-w-sm mb-6">

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | Noir & Co",
   },
   description:
-    "Noir & Co is Ghana's premier program management and hospitality company. We design structured, insight-driven experiences for investors, corporations, and the diaspora — from curated itineraries and investor delegations to bespoke logistics and on-ground concierge support.",
+    "Noir & Co is Ghana's premier program management and hospitality company. We design structured, insight-driven experiences for investors, corporations, and the diaspora, from curated itineraries and investor delegations to bespoke logistics and on-ground concierge support.",
   keywords: [
     "Ghana program management",
     "investor delegation Ghana",

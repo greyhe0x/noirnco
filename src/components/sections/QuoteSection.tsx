@@ -86,8 +86,8 @@ export function QuoteSection() {
             <Image
               src="/logo.png"
               alt="Noir & Co"
-              width={48}
-              height={48}
+              width={880}
+              height={1100}
               className="w-full h-full object-contain brightness-0 invert"
             />
           </div>
