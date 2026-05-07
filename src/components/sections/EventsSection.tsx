@@ -17,7 +17,7 @@ const EVENTS = [
     title: "Ghana CEO Tech Summit",
     subtitle: "Where Ghana's business elite converge",
     description:
-      "A landmark gathering of 400+ technology and business leaders. From branded stage builds to precision catering — every touchpoint designed to inspire.",
+      "A landmark gathering of 400+ technology and business leaders. From branded stage builds to precision catering  every touchpoint designed to inspire.",
     date: "November 2024",
     location: "Kempinski Hotel, Accra",
     tagClass: "bg-primary/20 text-primary",
@@ -47,7 +47,7 @@ const EVENTS = [
     title: "Accra Fashion Week Gala",
     subtitle: "West Africa's most anticipated closing night",
     description:
-      "The sold-out closing gala for Accra Fashion Week, produced end-to-end by our creative team — runway, lighting, artist bookings, and VIP hospitality.",
+      "The sold-out closing gala for Accra Fashion Week, produced end-to-end by our creative team  runway, lighting, artist bookings, and VIP hospitality.",
     date: "July 2024",
     location: "National Theatre, Accra",
     tagClass: "bg-warning/20 text-warning",
@@ -62,7 +62,7 @@ const EVENTS = [
     title: "Cocoa Board Annual Awards",
     subtitle: "Honouring Ghana's agricultural heroes",
     description:
-      "A night of prestige for 250 distinguished guests. Custom décor, award production, curated menu, and a live performance — all flawlessly executed.",
+      "A night of prestige for 250 distinguished guests. Custom décor, award production, curated menu, and a live performance  all flawlessly executed.",
     date: "March 2024",
     location: "Movenpick Ambassador, Accra",
     tagClass: "bg-success/15 text-success",
@@ -219,7 +219,7 @@ export function EventsSection() {
       {/* ══ Content overlay ════════════════════════════════════════════════ */}
       <div className="relative z-20 flex flex-col justify-end h-full px-8 md:px-14 xl:px-20 pb-14 pt-32 max-w-7xl mx-auto">
 
-        {/* Event details — CSS animated on slide change */}
+        {/* Event details  CSS animated on slide change */}
         <div key={fadeKey} className="animate-fade-in max-w-xl">
           {/* Category + meta */}
           <div className="flex flex-wrap items-center gap-3 mb-5">

@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ArrowRight, Play } from "lucide-react";
 import { Button, Container, Eyebrow } from "@/components/ui";
-import router from "next/router";
+import Link from "next/link";
 
 export function HeroSection() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -30,7 +30,7 @@ export function HeroSection() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-secondary"
     >
-      {/* Background image — replace with actual photo */}
+      {/* Background image  replace with actual photo */}
       <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center bg-no-repeat" />
 
       {/* Gradient overlay */}
@@ -43,7 +43,7 @@ export function HeroSection() {
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none" />
 
-      {/* Content — navbar is ~72px, so pt-24 clears it and centers visually */}
+      {/* Content  navbar is ~72px, so pt-24 clears it and centers visually */}
       <Container className="relative z-10 pt-24 pb-16 text-center">
         {/* Eyebrow */}
         <div ref={badgeRef} className="inline-block mb-6">
@@ -71,7 +71,7 @@ export function HeroSection() {
           style={{ fontSize: "clamp(1rem, 2vw, 1.125rem)", lineHeight: 1.7 }}
         >
           Whether you&apos;re hosting a corporate summit, a dream wedding, or exploring
-          Ghana&apos;s hidden gems — Noir &amp; Co handles every detail with elegance and precision.
+          Ghana&apos;s hidden gems  Noir &amp; Co handles every detail with elegance and precision.
         </p>
 
         {/* CTA buttons */}
@@ -79,28 +79,30 @@ export function HeroSection() {
           ref={actionsRef}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Button size="lg" variant="primary" className="group"
-          onClick={() => router.push("/consultation")}
-          >
-            Plan Your Event
-            <ArrowRight
-              size={18}
-              className="transition-transform duration-200 group-hover:translate-x-1"
-            />
+          <Button asChild size="lg" variant="primary" className="group">
+            <Link href="/consultation">
+              Plan Your Event
+              <ArrowRight
+                size={18}
+                className="transition-transform duration-200 group-hover:translate-x-1"
+              />
+            </Link>
           </Button>
           <Button
+            asChild
             size="lg"
             variant="ghost"
             className="text-white border border-white/30 hover:bg-white/10 rounded-full"
-            onClick={() => router.push("/about")}
           >
-            <Play size={16} className="fill-white" />
-            Watch Our Story
+            <Link href="/about">
+              <Play size={16} className="fill-white" />
+              Watch Our Story
+            </Link>
           </Button>
         </div>
       </Container>
 
-      {/* Scroll indicator — direct child of section so absolute bottom-10
+      {/* Scroll indicator  direct child of section so absolute bottom-10
           positions relative to the full-height section, not the Container */}
       <div
         ref={scrollRef}

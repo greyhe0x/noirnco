@@ -57,7 +57,7 @@ export function Navbar() {
             />
           </Link>
 
-          {/* Desktop nav — centred pill links */}
+          {/* Desktop nav  centred pill links */}
           <nav className="hidden md:flex items-center gap-0.5">
             {NAV_LINKS.map((link) => (
               <Link
@@ -118,7 +118,7 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* ── Mobile menu — expands inside the pill ─────────────────────── */}
+        {/* ── Mobile menu  expands inside the pill ─────────────────────── */}
         <div
           className={cn(
             "md:hidden overflow-hidden transition-all duration-300 ease-in-out",

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Container } from "@/components/ui";
+import { Container, TextOnLight } from "@/components/ui";
 
 /* ─── Data ────────────────────────────────────────────────────────────────── */
 /*
@@ -103,32 +103,38 @@ export function PartnersRibbon() {
         <div className="flex items-center justify-center gap-10 mb-8">
           <div className="flex items-center gap-2">
             <div className="w-5 h-px bg-primary/40" />
-            <span
-              className="font-body font-medium text-gray-400 uppercase tracking-widest"
+            <TextOnLight
+              as="span"
+              emphasis="muted"
+              weight="medium"
+              className="uppercase tracking-widest"
               style={{ fontSize: "0.6875rem" }}
             >
-              Hospitality Partners
-            </span>
+              Partners
+            </TextOnLight>
           </div>
           <div className="w-px h-4 bg-gray-200" aria-hidden="true" />
           <div className="flex items-center gap-2">
-            <span
-              className="font-body font-medium text-gray-400 uppercase tracking-widest"
+            <TextOnLight
+              as="span"
+              emphasis="muted"
+              weight="medium"
+              className="uppercase tracking-widest"
               style={{ fontSize: "0.6875rem" }}
             >
               Clients
-            </span>
+            </TextOnLight>
             <div className="w-5 h-px bg-primary/40" />
           </div>
         </div>
       </Container>
 
-      {/* Partners strip — 6 copies so half-track > 2560px */}
+      {/* Partners strip  6 copies so half-track > 2560px */}
       <div className="mb-5">
         <LogoStrip items={PARTNERS} copies={6} direction="left" />
       </div>
 
-      {/* Clients strip — 10 copies (fewer items, need more repeats) */}
+      {/* Clients strip  10 copies (fewer items, need more repeats) */}
       <LogoStrip items={CLIENTS} copies={10} direction="right" />
 
       {/* Edge fades */}

@@ -25,17 +25,17 @@ export function HeroVisual() {
 
   return (
     /*
-     * On mobile: compact circle only (no badges, no card) — sits above the text.
+     * On mobile: compact circle only (no badges, no card)  sits above the text.
      * On lg+:    full-size canvas with floating badges and stat card.
      */
     <div
       ref={containerRef}
       className="relative w-full flex items-center justify-center py-4 lg:py-0 min-h-[200px] lg:min-h-[520px]"
     >
-      {/* Outer glow ring — desktop only (too wide for mobile) */}
+      {/* Outer glow ring  desktop only (too wide for mobile) */}
       <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-primary/10 bg-primary/5 pointer-events-none" />
 
-      {/* Main circle — responsive size */}
+      {/* Main circle  responsive size */}
       {/* hero-portrait.jpg: a strong portrait photo, ideally shot from waist up */}
       <div className="hero-circle relative w-[170px] h-[170px] sm:w-[260px] sm:h-[260px] lg:w-[380px] lg:h-[380px] rounded-full overflow-hidden border border-primary/20 flex-shrink-0">
         <Image
@@ -50,7 +50,7 @@ export function HeroVisual() {
         <div className="absolute inset-0 rounded-full ring-2 ring-primary/20 ring-inset pointer-events-none" />
       </div>
 
-      {/* ── Floating badge pills — desktop only ─────────────────────────────── */}
+      {/* ── Floating badge pills  desktop only ─────────────────────────────── */}
       <FloatingBadge
         icon={<Users size={12} />}
         label="Expert Team"
@@ -72,11 +72,11 @@ export function HeroVisual() {
         className="hero-badge hidden lg:flex absolute bottom-[20%] right-[2%]"
       />
 
-      {/* ── Stat card — desktop only ─────────────────────────────────────────── */}
+      {/* ── Stat card  desktop only ─────────────────────────────────────────── */}
       <FloatingCard
-        stat="270+"
+        stat="1201+"
         label="Participants Hosted"
-        subLabel="Across 8+ global markets"
+        subLabel="Across 15+ global markets"
         showAvatars
         avatarImages={[
           "/images/participant-1.png",

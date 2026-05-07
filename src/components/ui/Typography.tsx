@@ -65,7 +65,7 @@ const textVariants = cva("font-body", {
       semibold: "font-semibold",
     },
     textColor: {
-      default: "text-secondary",
+      default: "text-secondary-light",
       muted:   "text-gray-500",
       primary: "text-primary",
       white:   "text-white",
@@ -94,6 +94,68 @@ export function Text({ as: Tag = "p", size, weight, color, className, ...props }
       {...props}
     />
   );
+}
+
+/* ── On-light / on-dark wrappers ─────────────────────────────────────────── */
+type Tone = "light" | "dark";
+type Emphasis = "default" | "muted";
+
+type HeadingToneProps = Omit<HeadingProps, "color"> & {
+  tone?: Tone;
+  emphasis?: Emphasis;
+};
+
+export function HeadingTone({
+  tone = "light",
+  emphasis = "default",
+  className,
+  ...props
+}: HeadingToneProps) {
+  const color =
+    tone === "dark"
+      ? "white"
+      : emphasis === "muted"
+        ? "muted"
+        : "default";
+
+  return <Heading {...props} color={color} className={className} />;
+}
+
+type TextToneProps = Omit<TextProps, "color"> & {
+  tone?: Tone;
+  emphasis?: Emphasis;
+};
+
+export function TextTone({
+  tone = "light",
+  emphasis = "default",
+  className,
+  ...props
+}: TextToneProps) {
+  if (tone === "dark") {
+    // Keep Text API, but allow the common “muted on dark” opacity pattern.
+    const darkClass = emphasis === "muted" ? "text-white/60" : "text-white";
+    return <Text {...props} color="white" className={cn(darkClass, className)} />;
+  }
+
+  const color = emphasis === "muted" ? "muted" : "default";
+  return <Text {...props} color={color} className={className} />;
+}
+
+export function HeadingOnLight(props: Omit<HeadingToneProps, "tone">) {
+  return <HeadingTone {...props} tone="light" />;
+}
+
+export function HeadingOnDark(props: Omit<HeadingToneProps, "tone">) {
+  return <HeadingTone {...props} tone="dark" />;
+}
+
+export function TextOnLight(props: Omit<TextToneProps, "tone">) {
+  return <TextTone {...props} tone="light" />;
+}
+
+export function TextOnDark(props: Omit<TextToneProps, "tone">) {
+  return <TextTone {...props} tone="dark" />;
 }
 
 /* ── Label / Eyebrow ─────────────────────────────────────────────────────── */

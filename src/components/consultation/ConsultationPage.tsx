@@ -2,7 +2,6 @@
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import {
@@ -11,79 +10,67 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BRAND } from "@/lib/constants";
+import { EventSlideshow } from "@/components/consultation/EventSlideshow";
+import { EVENT_TYPES, INTENT_OPTIONS } from "@/components/consultation/consultationData";
+import {
+  COUNTRY_CALLING_CODES,
+  formatCountryCallingCodeCompactLabel,
+  formatCountryCallingCodeLabel,
+} from "@/lib/phone/countryCallingCodes";
 /* ─── Config ──────────────────────────────────────────────────────────────── */
 const WA_NUMBER = "+233551204941"; // +233 55 120 4941
 
 /* ─── Types ───────────────────────────────────────────────────────────────── */
-type StepId   = "name" | "intent" | "eventType" | "phone";
+type StepId = "name" | "intent" | "eventType" | "contact";
 type Intent   = "exploring" | "deciding" | "planning";
+type ContactMethod = "whatsapp" | "email";
 interface FormData {
   name:      string;
   intent:    Intent | "";
   eventType: string;
-  phone:     string;
+  contactMethod: ContactMethod;
+  phoneCallingCode: string; // e.g. "+233"
+  phoneNational: string; // e.g. "551204941"
+  email: string;
 }
-
-/* ─── Data ────────────────────────────────────────────────────────────────── */
-const INTENT_OPTIONS: { id: Intent; emoji: string; label: string; sub: string }[] = [
-  { id: "exploring", emoji: "👀", label: "I'm exploring Ghana",          sub: "Curious about opportunities & what's possible"  },
-  { id: "deciding",  emoji: "🤔", label: "I have a goal in mind",        sub: "Investment, market entry, or a diaspora visit"   },
-  { id: "planning",  emoji: "🗓️", label: "I'm ready to plan a program",  sub: "I know what I need — let's get started"          },
-];
-
-const EVENT_TYPES = [
-  "Investor Delegation",
-  "Corporate Site Visit",
-  "Market Entry Program",
-  "Fellowship / Leadership Program",
-  "Diaspora Experience",
-  "Startup Ecosystem Event",
-  "Private Concierge Visit",
-  "Something else",
-];
-
-/* ─── Slideshow data ──────────────────────────────────────────────────────── */
-const SLIDES = [
-  {
-    label: "Halcyon 2025 Fellowship",
-    caption: "Leadership & market immersion — Accra, Ghana",
-    gradient: "linear-gradient(160deg, #0E1118 0%, #1a2a3a 40%, #0f2035 100%)",
-    blob: "radial-gradient(ellipse at 30% 60%, rgba(252,136,62,0.35) 0%, transparent 60%)",
-    tag: "Fellowship",
-    image: "/images/corporate.png",
-  },
-  {
-    label: "Investor Forum Series",
-    caption: "Curated deal-flow sessions — Kempinski, Accra",
-    gradient: "linear-gradient(160deg, #0a0a14 0%, #1a1040 40%, #0d0a20 100%)",
-    blob: "radial-gradient(ellipse at 70% 40%, rgba(155,62,110,0.4) 0%, transparent 60%)",
-    tag: "Investor",
-    image: "/images/talks.png",
-  },
-  {
-    label: "Adonai Partners Market Entry",
-    caption: "Bespoke delegation program — Accra & Kumasi",
-    gradient: "linear-gradient(160deg, #0f0a08 0%, #2a1508 40%, #1a0e00 100%)",
-    blob: "radial-gradient(ellipse at 50% 30%, rgba(252,136,62,0.45) 0%, transparent 55%)",
-    tag: "Market Entry",
-    image: "/images/selfie-smile.png",
-  },
-] as const;
 
 /* ─── Helpers ─────────────────────────────────────────────────────────────── */
 const first = (name: string) => name.trim().split(/\s+/)[0] || name.trim();
 
 function getSteps(intent: Intent | ""): StepId[] {
-  return ["name", "intent", ...(intent === "planning" ? (["eventType"] as StepId[]) : []), "phone"];
+  return ["name", "intent", ...(intent === "planning" ? (["eventType"] as StepId[]) : []), "contact"];
+}
+
+function buildContactLine(d: FormData) {
+  if (d.contactMethod === "email") return `📧 *Email:* ${d.email}`;
+  const phone = `${d.phoneCallingCode}${d.phoneNational}`;
+  return `📱 *WhatsApp:* ${phone}`;
 }
 
 function buildWAMessage(d: FormData) {
   const fn = first(d.name);
   if (d.intent === "exploring")
-    return `Hello Noir & Co! 👋\n\nMy name is ${fn} and I'm exploring Ghana — curious about the opportunities and experiences you can help design.\n\nWould love to learn more!\n\n📱 *My number:* ${d.phone}`;
+    return `Hello Noir & Co! 👋\n\nMy name is ${fn} and I'm exploring Ghana  curious about the opportunities and experiences you can help design.\n\nWould love to learn more!\n\n${buildContactLine(d)}`;
   if (d.intent === "deciding")
-    return `Hello Noir & Co! 🤔\n\nI'm ${fn}. I have a goal in mind — investment, market entry, or a diaspora visit — but I'm still figuring out the right approach.\n\nCould we have a quick discovery call?\n\n📱 *My number:* ${d.phone}`;
-  return `Hello Noir & Co! 🗓️\n\nI'm ${fn} and I'm ready to plan a *${d.eventType}* in Ghana. I'd love to get started!\n\n📱 *My number:* ${d.phone}`;
+    return `Hello Noir & Co! 🤔\n\nI'm ${fn}. I have a goal in mind  investment, market entry, or a diaspora visit  but I'm still figuring out the right approach.\n\nCould we have a quick discovery call?\n\n${buildContactLine(d)}`;
+  return `Hello Noir & Co! 🗓️\n\nI'm ${fn} and I'm ready to plan a *${d.eventType}* in Ghana. I'd love to get started!\n\n${buildContactLine(d)}`;
+}
+
+function buildEmailSubject(d: FormData) {
+  const fn = first(d.name);
+  if (d.intent === "exploring") return `Consultation  Exploring Ghana (${fn})`;
+  if (d.intent === "deciding") return `Consultation  Discovery call (${fn})`;
+  return `Consultation  Planning: ${d.eventType} (${fn})`;
+}
+
+function buildEmailBody(d: FormData) {
+  return buildWAMessage(d);
+}
+
+function buildMailtoHref(d: FormData) {
+  const subject = encodeURIComponent(buildEmailSubject(d));
+  const body = encodeURIComponent(buildEmailBody(d));
+  return `mailto:${BRAND.email}?subject=${subject}&body=${body}`;
 }
 
 /* ─── Slide-in question text per step ─────────────────────────────────────── */
@@ -103,9 +90,9 @@ function getQuestion(step: StepId, d: FormData): { q: string; hint: string } {
     case "eventType":
       return {
         q:    "What kind of program are you planning?",
-        hint: "Select the closest match — we design all of these.",
+        hint: "Select the closest match  we design all of these.",
       };
-    case "phone":
+    case "contact":
       if (d.intent === "exploring")
         return {
           q:    `Last step, ${fn}. How can we reach you?`,
@@ -117,127 +104,10 @@ function getQuestion(step: StepId, d: FormData): { q: string; hint: string } {
           hint: "We'll book a free 15-minute discovery call.",
         };
       return {
-        q:    `Almost there, ${fn}. What's the best number?`,
+        q:    `Almost there, ${fn}. How can we reach you?`,
         hint: `We'll be in touch to start designing your ${d.eventType}.`,
       };
   }
-}
-
-/* ══════════════════════════════════════════════════════════════════════════ */
-/* EventSlideshow                                                             */
-/* ══════════════════════════════════════════════════════════════════════════ */
-function EventSlideshow() {
-  /*
-   * Keep active in BOTH a ref and state:
-   *   - ref  → always current inside callbacks (no stale-closure glitch)
-   *   - state → triggers re-render for the caption text
-   */
-  const [active, setActive] = useState(0);
-  const activeRef           = useRef(0);
-  const slideRefs           = useRef<(HTMLDivElement | null)[]>([]);
-  const captionRef          = useRef<HTMLDivElement>(null);
-  const isAnimating         = useRef(false);
-  const intervalRef         = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  /* goTo has NO dependency on active state — uses activeRef instead */
-  const goTo = useCallback((next: number) => {
-    if (isAnimating.current || next === activeRef.current) return;
-    isAnimating.current = true;
-    const prev     = activeRef.current;
-    const current  = slideRefs.current[prev];
-    const incoming = slideRefs.current[next];
-    if (!current || !incoming) { isAnimating.current = false; return; }
-
-    gsap.set(incoming, { opacity: 0, zIndex: 2, scale: 1.06 });
-    gsap.set(current,  { zIndex: 1 });
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-        gsap.set(current, { zIndex: 0, opacity: 1, scale: 1 });
-        isAnimating.current = false;
-        activeRef.current   = next;
-        setActive(next);
-      },
-    });
-
-    if (captionRef.current)
-      tl.to(captionRef.current, { opacity: 0, y: -8, duration: 0.22, ease: "power2.in" }, 0);
-    tl.to(incoming, { opacity: 1, scale: 1, duration: 0.65, ease: "power2.out" }, 0.1);
-    tl.to(current,  { opacity: 0,           duration: 0.55, ease: "power2.in"  }, 0.1);
-    if (captionRef.current)
-      tl.to(captionRef.current, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.55);
-  }, []); // stable — no deps needed
-
-  /* Start auto-advance on mount; clean up on unmount */
-  useEffect(() => {
-    slideRefs.current.forEach((el, i) => {
-      if (el) gsap.set(el, { opacity: i === 0 ? 1 : 0, zIndex: i === 0 ? 1 : 0, scale: 1 });
-    });
-
-    intervalRef.current = setInterval(() => {
-      const next = (activeRef.current + 1) % SLIDES.length;
-      goTo(next);
-    }, 4500);
-
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [goTo]);
-
-  return (
-    <div className="relative w-full h-full overflow-hidden">
-      {SLIDES.map((slide, i) => (
-        <div
-          key={i}
-          ref={(el) => { slideRefs.current[i] = el; }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={slide.image}
-            alt={slide.label}
-            fill
-            priority={i === 0}
-            sizes="50vw"
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-[#050812]/20" />
-        </div>
-      ))}
-
-      {/* Bottom gradient for text legibility */}
-      <div
-        className="absolute bottom-0 inset-x-0 h-64 z-10 pointer-events-none"
-        style={{ background: "linear-gradient(to top, rgba(5,8,18,0.88) 0%, rgba(5,8,18,0.4) 55%, transparent 100%)" }}
-      />
-
-      {/* Caption — bottom-aligned to match the WA shortcut on the left */}
-      <div className="absolute bottom-0 inset-x-0 z-20 px-10 pb-7">
-        {/* Slide dots */}
-        <div className="flex items-center gap-1.5 mb-5">
-          {SLIDES.map((_, i) => (
-            <div
-              key={i}
-              className="rounded-full transition-all duration-400"
-              style={{
-                width:      i === active ? "22px" : "6px",
-                height:     "6px",
-                background: i === active ? "#FC883E" : "rgba(255,255,255,0.3)",
-              }}
-            />
-          ))}
-        </div>
-        <div ref={captionRef}>
-          <h3
-            className="font-heading font-bold text-white mb-1"
-            style={{ fontSize: "1.3rem", lineHeight: 1.2, letterSpacing: "-0.01em" }}
-          >
-            {SLIDES[active].label}
-          </h3>
-          <p className="font-body text-white/50" style={{ fontSize: "0.78rem" }}>
-            {SLIDES[active].caption}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
@@ -250,10 +120,23 @@ export function ConsultationPage() {
 
   const [step,      setStep]      = useState<StepId>("name");
   const [animDir,   setAnimDir]   = useState<1 | -1>(1);   // 1=forward, -1=back
-  const [formData,  setFormData]  = useState<FormData>({ name: "", intent: "", eventType: "", phone: "" });
+  const [formData,  setFormData]  = useState<FormData>({
+    name: "",
+    intent: "",
+    eventType: "",
+    contactMethod: "whatsapp",
+    phoneCallingCode: "+233",
+    phoneNational: "",
+    email: "",
+  });
   const [inputVal,  setInputVal]  = useState("");
   const [inputErr,  setInputErr]  = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [contactMethod, setContactMethod] = useState<ContactMethod>("whatsapp");
+  const [phoneCallingCode, setPhoneCallingCode] = useState("+233");
+  const [phoneNational, setPhoneNational] = useState("");
+  const [email, setEmail] = useState("");
+  const [useCustomCallingCode, setUseCustomCallingCode] = useState(false);
 
   /* ── Entrance animation ─────────────────────────────────────────────── */
   useGSAP(() => {
@@ -271,7 +154,7 @@ export function ConsultationPage() {
       { y: 0, opacity: 1, duration: 0.38, ease: "power3.out" }
     );
     // Focus text inputs after transition
-    if (step === "name" || step === "phone") {
+    if (step === "name" || step === "contact") {
       setTimeout(() => inputRef.current?.focus(), 350);
     }
   }, [step, animDir]);
@@ -284,9 +167,25 @@ export function ConsultationPage() {
 
   /* ── Current input value per text step ──────────────────────────────── */
   useEffect(() => {
-    setInputVal(step === "name" ? formData.name : step === "phone" ? formData.phone : "");
+    if (step === "name") {
+      setInputVal(formData.name);
+      setInputErr("");
+      return;
+    }
+    if (step === "contact") {
+      setContactMethod(formData.contactMethod);
+      setPhoneCallingCode(formData.phoneCallingCode);
+      setPhoneNational(formData.phoneNational);
+      setEmail(formData.email);
+      setUseCustomCallingCode(false);
+      setInputErr("");
+      return;
+    }
+    setInputVal("");
     setInputErr("");
-  }, [step, formData.name, formData.phone]);
+  }, [step, formData.name, formData.contactMethod, formData.phoneCallingCode, formData.phoneNational, formData.email]);
+
+  const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 
   /* ── Navigate forward ───────────────────────────────────────────────── */
   const advance = useCallback((patch: Partial<FormData> = {}) => {
@@ -294,7 +193,15 @@ export function ConsultationPage() {
 
     // Validate text inputs
     if (step === "name"  && !newData.name.trim())  { setInputErr("Please tell us your name."); return; }
-    if (step === "phone" && !newData.phone.trim()) { setInputErr("Please enter your WhatsApp number."); return; }
+    if (step === "contact") {
+      if (newData.contactMethod === "email") {
+        if (!newData.email.trim()) { setInputErr("Please enter your email address."); return; }
+        if (!isValidEmail(newData.email)) { setInputErr("Please enter a valid email address."); return; }
+      } else {
+        if (!newData.phoneNational.trim()) { setInputErr("Please enter your WhatsApp number."); return; }
+        if (!newData.phoneCallingCode.trim()) { setInputErr("Please select your country code."); return; }
+      }
+    }
 
     const nextSteps = getSteps(newData.intent);
     const nextIdx   = nextSteps.indexOf(step) + 1;
@@ -307,7 +214,13 @@ export function ConsultationPage() {
         setAnimDir(1);
         if (!next) {
           setSubmitted(true);
-          setTimeout(() => window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(buildWAMessage(newData))}`, "_blank"), 500);
+          setTimeout(() => {
+            if (newData.contactMethod === "email") {
+              window.open(buildMailtoHref(newData), "_blank");
+              return;
+            }
+            window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(buildWAMessage(newData))}`, "_blank");
+          }, 500);
         } else {
           setStep(next);
         }
@@ -331,8 +244,17 @@ export function ConsultationPage() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      const key = step === "name" ? "name" : "phone";
-      advance({ [key]: inputVal });
+      if (step === "name") {
+        advance({ name: inputVal });
+        return;
+      }
+      if (step === "contact") {
+        if (contactMethod === "email") {
+          advance({ contactMethod, email });
+          return;
+        }
+        advance({ contactMethod, phoneCallingCode, phoneNational });
+      }
     }
   };
 
@@ -370,8 +292,8 @@ export function ConsultationPage() {
   return (
     <div ref={pageRef} className="h-screen overflow-hidden grid grid-cols-1 lg:grid-cols-[55fr_45fr]">
 
-      {/* ════ LEFT — form ════════════════════════════════════════════════ */}
-      <div className="consult-left flex flex-col bg-background h-full overflow-hidden" style={{ opacity: 0 }}>
+      {/* ════ LEFT  form ════════════════════════════════════════════════ */}
+      <div className="consult-left flex flex-col bg-white h-full overflow-hidden" style={{ opacity: 0 }}>
 
         {/* ── Progress bar ──────────────────────────────────────────── */}
         <div className="h-1 w-full bg-gray-100 flex-shrink-0">
@@ -407,7 +329,7 @@ export function ConsultationPage() {
         {/* ── Step content ──────────────────────────────────────────── */}
         <div className="flex-1 flex flex-col justify-center px-6 md:px-10 xl:px-14 pb-6 overflow-hidden">
 
-          {/* Step container — animated on transition */}
+          {/* Step container  animated on transition */}
           <div ref={stepRef} className="w-full">
 
             {/* Step number */}
@@ -517,38 +439,177 @@ export function ConsultationPage() {
             )}
 
             {/* ── PHONE step ────────────────────────────────────────── */}
-            {step === "phone" && (
+            {step === "contact" && (
               <div className="flex flex-col gap-5">
-                <div>
-                  <input
-                    ref={inputRef}
-                    type="tel"
-                    autoComplete="tel"
-                    placeholder="+233 XX XXX XXXX"
-                    value={inputVal}
-                    onChange={(e) => { setInputVal(e.target.value); setInputErr(""); }}
-                    onKeyDown={handleKeyDown}
-                    className={cn(
-                      "w-full bg-transparent pb-3 pt-1 font-body text-secondary placeholder:text-gray-300 outline-none",
-                      "border-0 border-b-2 transition-colors duration-200",
-                      inputErr ? "border-red-400" : "border-gray-200 focus:border-primary"
-                    )}
-                    style={{ fontSize: "clamp(1.1rem, 2vw, 1.4rem)" }}
-                  />
-                  {inputErr && (
-                    <p className="mt-2 font-body text-red-400" style={{ fontSize: "0.78rem" }}>{inputErr}</p>
-                  )}
-                </div>
+                <fieldset className="flex flex-col gap-3">
+                  <legend className="sr-only">Preferred contact method</legend>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => { setContactMethod("whatsapp"); setInputErr(""); }}
+                      className={cn(
+                        "inline-flex items-center gap-2 rounded-full px-4 py-2 border font-body font-medium transition-colors",
+                        contactMethod === "whatsapp"
+                          ? "border-primary bg-primary/[0.06] text-primary"
+                          : "border-gray-200 text-secondary hover:border-primary/60 hover:bg-primary/[0.04]"
+                      )}
+                      style={{ fontSize: "0.875rem" }}
+                    >
+                      WhatsApp
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { setContactMethod("email"); setInputErr(""); }}
+                      className={cn(
+                        "inline-flex items-center gap-2 rounded-full px-4 py-2 border font-body font-medium transition-colors",
+                        contactMethod === "email"
+                          ? "border-primary bg-primary/[0.06] text-primary"
+                          : "border-gray-200 text-secondary hover:border-primary/60 hover:bg-primary/[0.04]"
+                      )}
+                      style={{ fontSize: "0.875rem" }}
+                    >
+                      Email
+                    </button>
+                  </div>
+                </fieldset>
+
+                {contactMethod === "whatsapp" ? (
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <span className="font-body text-gray-400" style={{ fontSize: "0.78rem" }}>
+                        WhatsApp number
+                      </span>
+                      <span className="font-body text-gray-400" style={{ fontSize: "0.78rem" }}>
+                        {useCustomCallingCode ? "Enter code" : "Pick country"}
+                      </span>
+                    </div>
+
+                    <div
+                      className={cn(
+                        "flex items-center gap-2 rounded-2xl border px-3 py-2 bg-transparent",
+                        "transition-colors duration-200",
+                        inputErr ? "border-red-400" : "border-gray-200 focus-within:border-primary"
+                      )}
+                    >
+                      {!useCustomCallingCode ? (
+                        <select
+                          value={phoneCallingCode}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === "__custom__") {
+                              setUseCustomCallingCode(true);
+                              setPhoneCallingCode("+");
+                              setInputErr("");
+                              return;
+                            }
+                            setPhoneCallingCode(value);
+                            setInputErr("");
+                          }}
+                          className={cn(
+                            "bg-transparent font-body text-secondary outline-none",
+                            "min-w-[92px] max-w-[140px] py-2 pr-2 border-0"
+                          )}
+                          style={{ fontSize: "1.0rem" }}
+                          aria-label="Country calling code"
+                        >
+                          {COUNTRY_CALLING_CODES.map((opt) => (
+                            <option key={`${opt.iso2}-${opt.callingCode}`} value={opt.callingCode}>
+                              {formatCountryCallingCodeCompactLabel(opt)}
+                            </option>
+                          ))}
+                          <option value="__custom__">Other…</option>
+                        </select>
+                      ) : (
+                        <input
+                          type="tel"
+                          inputMode="tel"
+                          placeholder="+1"
+                          value={phoneCallingCode}
+                          onChange={(e) => { setPhoneCallingCode(e.target.value); setInputErr(""); }}
+                          className={cn(
+                            "bg-transparent font-body text-secondary outline-none",
+                            "min-w-[92px] max-w-[140px] py-2 pr-2 border-0"
+                          )}
+                          style={{ fontSize: "1.0rem" }}
+                          aria-label="Custom calling code"
+                        />
+                      )}
+
+                      <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
+
+                      <input
+                        ref={inputRef}
+                        type="tel"
+                        autoComplete="tel-national"
+                        inputMode="tel"
+                        placeholder="55 120 4941"
+                        value={phoneNational}
+                        onChange={(e) => { setPhoneNational(e.target.value); setInputErr(""); }}
+                        onKeyDown={handleKeyDown}
+                        className={cn(
+                          "flex-1 bg-transparent py-2 font-body text-secondary placeholder:text-gray-300 outline-none border-0"
+                        )}
+                        style={{ fontSize: "1.05rem" }}
+                        aria-label="WhatsApp number"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="font-body text-gray-300" style={{ fontSize: "0.75rem" }}>
+                        Example: {phoneCallingCode} 55 120 4941
+                      </span>
+                      {useCustomCallingCode && (
+                        <button
+                          type="button"
+                          onClick={() => { setUseCustomCallingCode(false); setPhoneCallingCode("+233"); setInputErr(""); }}
+                          className="font-body text-gray-400 hover:text-secondary transition-colors"
+                          style={{ fontSize: "0.75rem" }}
+                        >
+                          back to country list
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <input
+                      ref={inputRef}
+                      type="email"
+                      autoComplete="email"
+                      inputMode="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(e) => { setEmail(e.target.value); setInputErr(""); }}
+                      onKeyDown={handleKeyDown}
+                      className={cn(
+                        "w-full bg-transparent pb-3 pt-1 font-body text-secondary placeholder:text-gray-300 outline-none",
+                        "border-0 border-b-2 transition-colors duration-200",
+                        inputErr ? "border-red-400" : "border-gray-200 focus:border-primary"
+                      )}
+                      style={{ fontSize: "clamp(1.1rem, 2vw, 1.4rem)" }}
+                    />
+                  </div>
+                )}
+
+                {inputErr && (
+                  <p className="mt-1 font-body text-red-400" style={{ fontSize: "0.78rem" }}>{inputErr}</p>
+                )}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                   <span className="flex items-center gap-1.5 font-body text-gray-300" style={{ fontSize: "0.75rem" }}>
                     <CornerDownLeft size={11} /> press Enter
                   </span>
                   <button
-                    onClick={() => advance({ phone: inputVal })}
+                    onClick={() => {
+                      if (contactMethod === "email") {
+                        advance({ contactMethod, email });
+                        return;
+                      }
+                      advance({ contactMethod, phoneCallingCode, phoneNational });
+                    }}
                     className="inline-flex items-center gap-2 bg-primary text-white font-heading font-semibold rounded-full px-5 py-2.5 hover:bg-primary-dark transition-all duration-200 shadow-[var(--shadow-primary)]"
                     style={{ fontSize: "0.875rem" }}
                   >
-                    Send to WhatsApp <ArrowRight size={14} />
+                    {contactMethod === "email" ? "Send via Email" : "Send to WhatsApp"} <ArrowRight size={14} />
                   </button>
                 </div>
               </div>
@@ -562,30 +623,50 @@ export function ConsultationPage() {
           <p className="font-body text-gray-400 mb-3" style={{ fontSize: "0.72rem", letterSpacing: "0.04em", textTransform: "uppercase" }}>
             Or reach us directly
           </p>
-          <a
-            href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hello Noir & Co! 👋 I'd like to book a consultation. Can we chat?")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-2xl px-4 py-3 border border-gray-200 group hover:border-[#25D366]/40 hover:bg-[#25D366]/[0.04] transition-colors"
-          >
-            <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center flex-shrink-0">
-              <MessageCircle size={14} className="text-white" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-body font-semibold text-secondary group-hover:text-[#128C7E] transition-colors" style={{ fontSize: "0.8rem" }}>
-                Prefer to chat directly?
-              </p>
-              <p className="font-body text-gray-400" style={{ fontSize: "0.72rem" }}>
-                Message us on WhatsApp — we respond within 24 hrs
-              </p>
-            </div>
-            <ChevronRight size={14} className="text-gray-300 group-hover:text-[#25D366] transition-colors flex-shrink-0" />
-          </a>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <a
+              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hello Noir & Co! 👋 I'd like to book a consultation. Can we chat?")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-2xl px-4 py-3 border border-gray-200 group hover:border-[#25D366]/40 hover:bg-[#25D366]/[0.04] transition-colors"
+            >
+              <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center flex-shrink-0">
+                <MessageCircle size={14} className="text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-body font-semibold text-secondary group-hover:text-[#128C7E] transition-colors" style={{ fontSize: "0.8rem" }}>
+                  WhatsApp us
+                </p>
+                <p className="font-body text-gray-400" style={{ fontSize: "0.72rem" }}>
+                  Message us  we respond within 24 hrs
+                </p>
+              </div>
+              <ChevronRight size={14} className="text-gray-300 group-hover:text-[#25D366] transition-colors flex-shrink-0" />
+            </a>
+
+            <a
+              href={`mailto:${BRAND.email}?subject=${encodeURIComponent("Consultation request")}&body=${encodeURIComponent("Hello Noir & Co! I'd like to book a consultation.")}`}
+              className="flex items-center gap-3 rounded-2xl px-4 py-3 border border-gray-200 group hover:border-primary/40 hover:bg-primary/[0.04] transition-colors"
+            >
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                <Sparkles size={14} className="text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-body font-semibold text-secondary group-hover:text-primary transition-colors" style={{ fontSize: "0.8rem" }}>
+                  Email us
+                </p>
+                <p className="font-body text-gray-400" style={{ fontSize: "0.72rem" }}>
+                  Send a message to {BRAND.email}
+                </p>
+              </div>
+              <ChevronRight size={14} className="text-gray-300 group-hover:text-primary transition-colors flex-shrink-0" />
+            </a>
+          </div>
         </div>
 
       </div>{/* end left panel */}
 
-      {/* ════ RIGHT — slideshow ══════════════════════════════════════════ */}
+      {/* ════ RIGHT  slideshow ══════════════════════════════════════════ */}
       <div className="consult-right hidden lg:block relative overflow-hidden" style={{ opacity: 0 }}>
         <EventSlideshow />
       </div>

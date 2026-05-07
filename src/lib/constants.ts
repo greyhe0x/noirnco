@@ -29,13 +29,13 @@ export const SERVICES = [
     id: "corporate-hosting",
     title: "Investor & Corporate Hosting",
     description:
-      "Executive visits, conferences, startup showcases, private dinners, and curated networking events — designed for impact.",
+      "Executive visits, conferences, startup showcases, private dinners, and curated networking events  designed for impact.",
   },
   {
     id: "bespoke-logistics",
     title: "Bespoke Logistics",
     description:
-      "Comprehensive coordination of arrivals, premium accommodation, and private transportation — seamlessly executed.",
+      "Comprehensive coordination of arrivals, premium accommodation, and private transportation  seamlessly executed.",
   },
   {
     id: "curated-itineraries",
@@ -47,12 +47,12 @@ export const SERVICES = [
     id: "concierge",
     title: "Personalised Concierge",
     description:
-      "Tailored, on-demand support for both short-term visits and extended stays — your dedicated partner on the ground.",
+      "Tailored, on-demand support for both short-term visits and extended stays  your dedicated partner on the ground.",
   },
 ] as const;
 
 export const STATS = [
-  { value: "270+", label: "Participants Hosted" },
+  { value: "1201+", label: "Participants Hosted" },
   { value: "8+",   label: "Markets Served"      },
   { value: "40+",  label: "Startups Supported"  },
   { value: "98%",  label: "Satisfaction Rate"   },

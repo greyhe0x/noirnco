@@ -5,7 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { Container } from "@/components/ui";
+import { Container, HeadingOnLight, TextOnLight } from "@/components/ui";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,7 +20,7 @@ function Star() {
 
 /* ─── Testimonial data ────────────────────────────────────────────────────── */
 /*
- * Photo placeholders — add matching files to /public/images/:
+ * Photo placeholders  add matching files to /public/images/:
  *   avatar-safesip.png · avatar-cherotich.png · avatar-dan-barker.png
  *   avatar-marcelo.png · avatar-mercy.png     · avatar-maya.png
  *   avatar-edward.png  · avatar-millicent.png · avatar-tsia.png
@@ -74,7 +74,7 @@ const TESTIMONIALS = [
     role:     "Senior Manager, Accelerator Program",
     org:      "Halcyon",
     bg:       "bg-success",
-    quote:    "My experience with Noir & Co was truly exceptional. The team handled everything so seamlessly, allowing me to be fully present throughout the program. The Cape Coast tour was especially meaningful — it wasn't just a visit, it was a deeply intentional experience.",
+    quote:    "My experience with Noir & Co was truly exceptional. The team handled everything so seamlessly, allowing me to be fully present throughout the program. The Cape Coast tour was especially meaningful  it wasn't just a visit, it was a deeply intentional experience.",
     stars:    5,
   },
   {
@@ -94,7 +94,7 @@ const TESTIMONIALS = [
     role:     "",
     org:      "SafeSip",
     bg:       "bg-[#9B3E6E]",
-    quote:    "To Sandra, Jessica and Ronald — you have been amazing team players. You coordinated everything in a timely manner and we will love to stay longer. Thank you very much for having us.",
+    quote:    "To Sandra, Jessica and Ronald  you have been amazing team players. You coordinated everything in a timely manner and we will love to stay longer. Thank you very much for having us.",
     stars:    5,
   },
   {
@@ -161,12 +161,22 @@ function TestimonialCard({
           </div>
         )}
         <div className="min-w-0">
-          <p className="font-heading font-bold text-secondary truncate" style={{ fontSize: "0.875rem" }}>
+          <TextOnLight
+            as="p"
+            weight="semibold"
+            className="truncate"
+            style={{ fontSize: "0.875rem" }}
+          >
             {name}
-          </p>
-          <p className="font-body text-gray-400 truncate" style={{ fontSize: "0.72rem" }}>
+          </TextOnLight>
+          <TextOnLight
+            as="p"
+            emphasis="muted"
+            className="truncate"
+            style={{ fontSize: "0.72rem" }}
+          >
             {role ? `${role} · ${org}` : org}
-          </p>
+          </TextOnLight>
         </div>
       </div>
 
@@ -235,15 +245,22 @@ export function TestimonialsSection() {
       {/* ── Header ── */}
       <Container>
         <div className="testimonials-header mb-12 text-center" style={{ opacity: 0 }}>
-          <h2
-            className="font-heading font-bold text-secondary"
+          <HeadingOnLight
+            as="h2"
+            weight="bold"
+            className="text-secondary-light"
             style={{ fontSize: "clamp(2rem, 4vw, 3rem)", lineHeight: 1.12, letterSpacing: "-0.02em" }}
           >
             What Our Clients Say
-          </h2>
-          <p className="font-body text-gray-400 mt-3 max-w-md mx-auto" style={{ fontSize: "0.9rem" }}>
+          </HeadingOnLight>
+          <TextOnLight
+            as="p"
+            emphasis="muted"
+            className="mt-3 max-w-md mx-auto"
+            style={{ fontSize: "0.9rem" }}
+          >
             Real words from investors, fellows, and executives we&apos;ve hosted across Ghana.
-          </p>
+          </TextOnLight>
         </div>
       </Container>
 

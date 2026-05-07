@@ -13,7 +13,7 @@ const AVATAR_COLORS = [
 interface AvatarGroupProps {
   count?: number;
   size?: "sm" | "md";
-  /** Optional real photo URLs — falls back to coloured initials when absent */
+  /** Optional real photo URLs  falls back to coloured initials when absent */
   images?: string[];
   className?: string;
 }

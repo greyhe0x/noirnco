@@ -72,7 +72,7 @@ export function QuoteSection() {
             opacity: 0,
           }}
         >
-          Ghana is one of the most compelling destinations on earth for investors and the
+          Ghana is one of the most compelling destinations for investors and the
           diaspora. Our job is to ensure that every person who walks through its doors does so with{" "}
           <strong className="text-golden font-bold">the right context</strong>,{" "}
           <strong className="text-golden font-bold">the right connections</strong>, and{" "}
@@ -116,7 +116,7 @@ export function QuoteSection() {
               ]}
             />
             <p className="font-body text-white/40" style={{ fontSize: "0.75rem" }}>
-              270+ participants hosted
+              1201+ participants hosted
             </p>
           </div>
         </div>

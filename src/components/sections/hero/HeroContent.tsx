@@ -4,9 +4,9 @@ import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui";
+import { Button, HeadingOnLight, TextOnLight } from "@/components/ui";
 import { AvatarGroup } from "@/components/ui/AvatarGroup";
-import router from "next/router";
+import Link from "next/link";
 
 const PARTNER_LOGOS = [
   { name: "KIC", abbr: "KIC" },
@@ -38,56 +38,65 @@ export function HeroContent() {
       className="flex flex-col items-start justify-center gap-3 lg:gap-5 lg:py-0 lg:pr-12 xl:pr-20"
     >
       {/* Headline */}
-      <h1
+      <HeadingOnLight
+        as="h1"
+        weight="bold"
         data-animate
-        className="font-heading font-bold text-secondary opacity-0"
+        className="opacity-0"
         style={{ fontSize: "clamp(2.5rem, 6vw, 4.25rem)", lineHeight: 1.08, letterSpacing: "-0.025em" }}
       >
         Ghana,{" "}
         <span className="text-gradient-primary">by Design.</span>
-      </h1>
+      </HeadingOnLight>
 
       {/* Social proof row */}
       <div data-animate className="flex items-center gap-3 opacity-0">
         <AvatarGroup count={5} size="md" />
         <div>
-          <p className="font-heading font-bold text-secondary leading-none" style={{ fontSize: "0.9375rem" }}>
+          <TextOnLight as="p" weight="semibold" className="leading-none" style={{ fontSize: "0.9375rem" }}>
             270+ Participants
-          </p>
-          <p className="font-body text-gray-500" style={{ fontSize: "0.71875rem" }}>
+          </TextOnLight>
+          <TextOnLight as="p" emphasis="muted" style={{ fontSize: "0.71875rem" }}>
             hosted across 8+ global markets
-          </p>
+          </TextOnLight>
         </div>
       </div>
 
       {/* Body */}
-      <p
+      <TextOnLight
+        as="p"
         data-animate
-        className="font-body text-gray-600 max-w-lg opacity-0"
+        emphasis="muted"
+        className="max-w-lg opacity-0"
         style={{ fontSize: "clamp(0.875rem, 1.4vw, 1rem)", lineHeight: 1.75 }}
       >
         A program management and hospitality company specialising in structured,
         insight-driven experiences in Ghana for investors, businesses, and the diaspora.
-      </p>
+      </TextOnLight>
 
-      {/* CTA — single button on hero */}
+      {/* CTA  single button on hero */}
       <div data-animate className="opacity-0">
-        <Button size="lg" variant="primary" className="group"
-        onClick={() => router.push("/consultation")}
-        >
-          Plan Your Experience
-          <ChevronRight
-            size={18}
-            className="transition-transform duration-200 group-hover:translate-x-1"
-          />
+        <Button asChild size="lg" variant="primary" className="group">
+          <Link href="/consultation">
+            Plan Your Experience
+            <ChevronRight
+              size={18}
+              className="transition-transform duration-200 group-hover:translate-x-1"
+            />
+          </Link>
         </Button>
       </div>
 
       {/* Partner logos */}
       <div data-animate className="pt-2 opacity-0">
-        <p className="font-body text-gray-400 mb-3" style={{ fontSize: "0.75rem", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+        <TextOnLight
+          as="p"
+          emphasis="muted"
+          className="mb-3 uppercase"
+          style={{ fontSize: "0.75rem", letterSpacing: "0.08em" }}
+        >
           Trusted partners
-        </p>
+        </TextOnLight>
         <div className="flex items-center gap-3 flex-wrap">
           {PARTNER_LOGOS.map((p) => (
             <div

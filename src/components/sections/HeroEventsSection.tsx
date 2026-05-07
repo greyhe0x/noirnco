@@ -7,9 +7,8 @@ import { ChevronRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui";
 import { AvatarGroup } from "@/components/ui/AvatarGroup";
 import Link from "next/link";
-import router from "next/router";
 
-// Commented out — hero panel hidden for now
+// Commented out  hero panel hidden for now
 // import { useGSAP } from "@gsap/react";
 // import { ScrollTrigger } from "gsap/ScrollTrigger";
 // import { ChevronLeft, MapPin, Calendar } from "lucide-react";
@@ -55,7 +54,7 @@ const EVENTS: EventData[] = [
     title: "Adonai Partners Market Entry",
     subtitle: "Structured access for serious investors",
     description:
-      "A bespoke market entry program for Adonai Partners — coordinating investor meetings, site visits, regulatory briefings, and curated dinners with Ghana's leading business figures.",
+      "A bespoke market entry program for Adonai Partners  coordinating investor meetings, site visits, regulatory briefings, and curated dinners with Ghana's leading business figures.",
     date: "2024",
     location: "Accra & Kumasi, Ghana",
     photos: [
@@ -83,7 +82,7 @@ const EVENTS: EventData[] = [
     title: "Startup Ecosystem Events",
     subtitle: "Fuelling Ghana's innovation agenda",
     description:
-      "From pitch nights to ecosystem summits — we produce high-impact gatherings that connect local startups with the mentors, investors, and networks they need to scale.",
+      "From pitch nights to ecosystem summits  we produce high-impact gatherings that connect local startups with the mentors, investors, and networks they need to scale.",
     date: "Year-round",
     location: "KIC, Accra",
     photos: [
@@ -100,7 +99,7 @@ const N = EVENTS.length;
 /*
  * Full-screen photo slideshow as the hero background.
  * Photos crossfade automatically; the brand headline + description sits on top.
- * (Event names are no longer displayed — hero copy is always-on.)
+ * (Event names are no longer displayed  hero copy is always-on.)
  */
 function EventsCarousel() {
   const currentEventRef = useRef(0);
@@ -216,14 +215,16 @@ function EventsCarousel() {
           <h1
             className="font-heading font-bold text-white"
             style={{
-              fontSize:   "clamp(2.75rem, 7vw, 5.5rem)",
+              fontSize:   "clamp(2.75rem, 3vw, 2.5rem)",
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
               /* Shadow on the white "Ghana," portion */
               textShadow: "0 2px 24px rgba(0,0,0,0.55), 0 8px 48px rgba(0,0,0,0.35)",
             }}
           >
-            We make{" "}<br/>
+
+              <strong className="text-white text-[1.8rem]">Curated Access to</strong>
+            {" "}<br/>
             <span
               style={{
                 backgroundImage:      "url('/images/gh-patterns.png')",
@@ -233,11 +234,12 @@ function EventsCarousel() {
                 backgroundSize:       "320px auto",
                 backgroundPosition:   "center",
                 filter:               "drop-shadow(0 0 2px rgba(255,255,255,0.95)) drop-shadow(0 0 8px rgba(255,255,255,0.80)) drop-shadow(0 0 22px rgba(255,255,255,0.55))",
+                fontSize: "clamp(2.75rem, 7vw, 5.5rem)",
               }}
             >
-              Ghana.
+              Ghana's
             </span>
-            {" "}<br/>Feel like home.
+            {" "}<br/>Opportunities, Culture <br/>and Connections
             {/* Image-filled text: gh-patterns.png clipped to the letterforms */}
             {/* Layered dark halos lift the text off the photo background */}
           </h1>
@@ -282,14 +284,14 @@ function EventsCarousel() {
 
           {/* CTA */}
           <div>
-            <Button variant="primary" size="lg" className="group" 
-            onClick={() => router.push("/consultation")}
-            >
-              Plan Your Experience
-              <ChevronRight
-                size={18}
-                className="transition-transform duration-200 group-hover:translate-x-1"
-              />
+            <Button asChild variant="primary" size="lg" className="group">
+              <Link href="/consultation">
+                Plan Your Experience
+                <ChevronRight
+                  size={18}
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                />
+              </Link>
             </Button>
           </div>
 
@@ -329,7 +331,7 @@ export function HeroEventsSection() {
   );
 }
 
-/* ── COMMENTED OUT — two-panel hero + events scroll transition ──────────────
+/* ── COMMENTED OUT  two-panel hero + events scroll transition ──────────────
 export function HeroEventsSection_TwoPanel() {
   const wrapperRef      = useRef<HTMLDivElement>(null);
   const trackRef        = useRef<HTMLDivElement>(null);

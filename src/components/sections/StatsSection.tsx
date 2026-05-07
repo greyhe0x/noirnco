@@ -10,16 +10,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 const STATS = [
   {
-    value: 270,
+    value: 1201,
     suffix: "+",
     label: "Participants Hosted",
-    sub: "investors, executives & diaspora",
+    sub: "international business executives, investors & the diaspora",
     featured: true,
   },
   {
-    value: 8,
+    value: 15,
     suffix: "+",
-    label: "Markets Served",
+    label: "Countries Served",
     sub: "global reach, local expertise",
     featured: false,
   },
@@ -27,14 +27,14 @@ const STATS = [
     value: 40,
     suffix: "+",
     label: "Startups Supported",
-    sub: "across Ghana's ecosystem",
+    sub: "across Ghana and other ecosystems",
     featured: false,
   },
   {
     value: 98,
     suffix: "%",
     label: "Satisfaction Rate",
-    sub: "from program participants",
+    sub: "from clients and program participants",
     featured: false,
   },
 ] as const;
@@ -111,7 +111,7 @@ export function StatsSection() {
             <div className="absolute -top-24 -left-24 w-80 h-80 bg-primary/15 rounded-full blur-[80px]" />
             {/* Radial glow bottom-right */}
             <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-primary/10 rounded-full blur-[80px]" />
-            {/* Decorative ring — large, faint */}
+            {/* Decorative ring  large, faint */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-white/5" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-white/5" />
           </div>

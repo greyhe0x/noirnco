@@ -7,13 +7,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { Container } from "@/components/ui";
+import { Container, HeadingOnLight, TextOnLight } from "@/components/ui";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /* ─── Sub-section data ────────────────────────────────────────────────────── */
 /*
- * Image placeholders — add matching files to /public/images/:
+ * Image placeholders  add matching files to /public/images/:
  *   about-programs.jpg   →  team / program session / curated meeting
  *   about-hospitality.jpg →  premium venue / concierge / logistics moment
  */
@@ -22,12 +22,12 @@ const SECTIONS = [
     id: "about-1",
     image: "/images/about-programs.png",
     imageAlt: "Noir & Co program management team at work",
-    badge: "8+ Markets",
+    badge: "15+ Countries",
     badgeSub: "Global reach, local expertise",
     title: "Ghana's Premier\nProgram Management Team",
     titleAccent: "Program Management Team",
     description:
-      "Noir & Co was built to solve a real problem: investors and businesses arriving in Ghana without the context, connections, or infrastructure to move effectively. We fill that gap — designing structured, insight-driven programs that give our clients the clarity to act with confidence.",
+      "Noir & Co was built to solve a real problem: investors and businesses arriving in Ghana without the context, connections, or infrastructure to move effectively. We fill that gap  designing structured, insight-driven programs that give our clients the clarity to act with confidence.",
     cta: "Our Story",
     ctaHref: "#",
     imageRight: false,
@@ -36,12 +36,12 @@ const SECTIONS = [
     id: "about-2",
     image: "/images/about-hospitality.png",
     imageAlt: "Premium hospitality and logistics in Ghana",
-    badge: "270+",
+    badge: "1201+",
     badgeSub: "Participants hosted",
-    title: "Precision Logistics.\nElevated Hospitality.",
+    title: "Bespoke program management, \nPrecision Logistics.",
     titleAccent: "Elevated Hospitality.",
     description:
-      "From premium accommodation and private transportation to curated dinners and on-ground concierge support — every operational detail is handled by our dedicated team. You focus on your goals; we make Ghana seamless.",
+      "From premium accommodation and private transportation to curated dinners and on-ground concierge support  every operational detail is handled by our dedicated team. You focus on your goals; we make Ghana seamless.",
     cta: "Book a Consultation",
     ctaHref: "/consultation",
     imageRight: true,
@@ -114,8 +114,10 @@ function AboutSubSection({
       className="about-text flex flex-col gap-6 justify-center"
       style={{ opacity: 0 }}
     >
-      <h2
-        className="font-heading font-bold text-secondary"
+      <HeadingOnLight
+        as="h2"
+        weight="bold"
+        className="text-secondary-dark"
         style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", lineHeight: 1.12, letterSpacing: "-0.02em" }}
       >
         {titleLines.map((line, i) => {
@@ -131,14 +133,16 @@ function AboutSubSection({
             </React.Fragment>
           );
         })}
-      </h2>
+      </HeadingOnLight>
 
-      <p
-        className="font-body text-gray-500 leading-relaxed"
+      <TextOnLight
+        as="p"
+        emphasis="muted"
+        className="leading-relaxed"
         style={{ fontSize: "clamp(0.9rem, 1.4vw, 1rem)", lineHeight: 1.85 }}
       >
         {description}
-      </p>
+      </TextOnLight>
 
       <Link
         href={ctaHref}

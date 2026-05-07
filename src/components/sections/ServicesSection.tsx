@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Container, Heading, Text, Card } from "@/components/ui";
+import { Container, HeadingOnLight, TextOnLight, Text, Card } from "@/components/ui";
 import { useGsapFadeIn, useGsapReveal } from "@/hooks/useGsapFadeIn";
 
 const SERVICES = [
@@ -78,13 +78,12 @@ export function ServicesSection() {
       <Container>
         {/* Header */}
         <div ref={headerRef} className="max-w-xl mb-14 text-center w-full mx-auto">
-          <Heading as="h2" className="mb-4 text-center">
+          <HeadingOnLight as="h2" className="mb-4 text-center text-secondary-light">
             One Partner. <br/>Every Detail Covered.
-          </Heading>
-          <Text color="muted" className="text-center">
-            From the first briefing to the final farewell. We design, manage, and
-            deliver every element of your Ghana experience.
-          </Text>
+          </HeadingOnLight>
+          <TextOnLight emphasis="muted" className="text-center">
+          At Noir & Co, we create purposeful, refined experiences that connect people to opportunity, culture, and community in Ghana.
+          </TextOnLight>
         </div>
 
         {/* Cards */}

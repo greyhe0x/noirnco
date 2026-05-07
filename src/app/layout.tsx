@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { ThemeDevPanel } from "@/components/dev/ThemeDevPanel";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://noirandco.com.gh";
 
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
 
   title: {
-    default: "Noir & Co — Ghana, by Design.",
+    default: "Noir & Co  Ghana, by Design.",
     template: "%s | Noir & Co",
   },
   description:
@@ -32,24 +33,24 @@ export const metadata: Metadata = {
     locale:      "en_US",
     url:         BASE_URL,
     siteName:    "Noir & Co",
-    title:       "Noir & Co — Ghana, by Design.",
+    title:       "Noir & Co  Ghana, by Design.",
     description:
-      "Ghana's premier program management company. We design curated investor delegations, corporate programs, and diaspora experiences — delivered with precision and elevated hospitality.",
+      "Ghana's premier program management company. We design curated investor delegations, corporate programs, and diaspora experiences  delivered with precision and elevated hospitality.",
     images: [
       {
         url:    "/og-image.jpg",
         width:  1200,
         height: 630,
-        alt:    "Noir & Co — Ghana Investor Forum Series, Accra",
+        alt:    "Noir & Co  Ghana Investor Forum Series, Accra",
       },
     ],
   },
 
   twitter: {
     card:        "summary_large_image",
-    title:       "Noir & Co — Ghana, by Design.",
+    title:       "Noir & Co  Ghana, by Design.",
     description:
-      "Ghana's premier program management company. We design curated investor delegations, corporate programs, and diaspora experiences — delivered with precision and elevated hospitality.",
+      "Ghana's premier program management company. We design curated investor delegations, corporate programs, and diaspora experiences  delivered with precision and elevated hospitality.",
     images: ["/og-image.jpg"],
   },
 
@@ -75,7 +76,10 @@ export default function RootLayout({
       lang="en"
       className="h-full antialiased"
     >
-      <body className="min-h-full flex flex-col antialiased overflow-x-hidden">{children}</body>
+      <body className="min-h-full flex flex-col antialiased overflow-x-hidden">
+        {children}
+        {process.env.NODE_ENV !== "production" ? <ThemeDevPanel /> : null}
+      </body>
     </html>
   );
 }

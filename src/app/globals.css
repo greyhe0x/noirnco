@@ -1,8 +1,8 @@
-/* Tailwind v4 — must be first */
+/* Tailwind v4  must be first */
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Cerebri Sans — local font faces
+   Cerebri Sans  local font faces
    Files live in /public/fonts/ and are served as static assets.
 ───────────────────────────────────────────────────────────────────────────── */
 @font-face {
@@ -42,8 +42,8 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   @theme inline — font families
-   No longer referencing next/font CSS variables — use the face name directly.
+   @theme inline  font families
+   No longer referencing next/font CSS variables  use the face name directly.
 ───────────────────────────────────────────────────────────────────────────── */
 @theme inline {
   --font-sans:    'Cerebri Sans', system-ui, sans-serif;
@@ -53,7 +53,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   @theme — design tokens
+   @theme  design tokens
    These emit :root CSS custom properties AND generate Tailwind utility classes.
 ───────────────────────────────────────────────────────────────────────────── */
 @theme {
@@ -67,12 +67,15 @@
   --color-primary-light:   #2596be;
   --color-primary-dark:    #E86A1F;
   --color-secondary:       #1B1F2A;
+
+
   /* --color-secondary:       #2596be; */
-  --color-secondary-light: #2D3347;
+  --color-secondary-light: #FFFFFF;
   --color-secondary-dark:  #0E1118;
 
   /* ── Surface ── */
-  /* --color-background:      #FFF4ED; */
+  /* Brand direction: blue page background, gold accents */
+  --color-page:           #2596be;
   --color-background:      #FFFFFF;
   --color-surface:         #FFFFFF;
   --color-surface-muted:   #FFF8F3;
@@ -143,7 +146,7 @@
    IMPORTANT: everything here sits BELOW @layer utilities in the cascade.
    Tailwind's Preflight (included via @import "tailwindcss") already resets
    margin and padding, so we only need box-sizing + project-level defaults.
-   Do NOT set `color` on heading elements here — let text-* utilities win.
+   Do NOT set `color` on heading elements here  let text-* utilities win.
 ───────────────────────────────────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
@@ -159,13 +162,13 @@
     font-family: 'Cerebri Sans', system-ui, sans-serif;
     font-size: 1rem;
     line-height: 1.6;
-    background-color: var(--color-background);
+    background-color: var(--color-page);
     color: var(--color-secondary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Heading font & size defaults — colour intentionally left unset so that
+  /* Heading font & size defaults  colour intentionally left unset so that
      text-white / text-primary utilities can override without a fight. */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Cerebri Sans', system-ui, sans-serif;
@@ -193,7 +196,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   @layer utilities — custom single-purpose classes
+   @layer utilities  custom single-purpose classes
    These sit in the utilities layer so they win over base but lose to inline.
 ───────────────────────────────────────────────────────────────────────────── */
 @layer utilities {
