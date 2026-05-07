@@ -71,16 +71,21 @@ export function Footer() {
               Get in Touch
             </h4>
             <ul className="space-y-3">
-              {[
-                { icon: Mail,    value: BRAND.email    },
-                { icon: Phone,   value: BRAND.phone    },
-                { icon: MapPin,  value: BRAND.location },
-              ].map(({ icon: Icon, value }) => (
-                <li key={value} className="flex items-start gap-3">
-                  <Icon size={14} className="text-primary mt-1 shrink-0" />
-                  <span className="font-body text-body-sm text-gray-300">{value}</span>
-                </li>
-              ))}
+              <li className="flex items-start gap-3">
+                <Mail size={14} className="text-primary mt-1 shrink-0" />
+                <span className="font-body text-body-sm text-gray-300">{BRAND.email}</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Phone size={14} className="text-primary mt-1 shrink-0" />
+                <div className="flex flex-col gap-0.5">
+                  <span className="font-body text-body-sm text-gray-300">{BRAND.phone}</span>
+                  <span className="font-body text-body-sm text-gray-300">{BRAND.phoneSec}</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <MapPin size={14} className="text-primary mt-1 shrink-0" />
+                <span className="font-body text-body-sm text-gray-300">{BRAND.location}</span>
+              </li>
             </ul>
           </div>
         </div>

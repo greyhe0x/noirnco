@@ -222,9 +222,7 @@ function EventsCarousel() {
               textShadow: "0 2px 24px rgba(0,0,0,0.55), 0 8px 48px rgba(0,0,0,0.35)",
             }}
           >
-            Ghana,{" "}<br/>
-            {/* Image-filled text: gh-patterns.png clipped to the letterforms */}
-            {/* Layered dark halos lift the text off the photo background */}
+            We make{" "}<br/>
             <span
               style={{
                 backgroundImage:      "url('/images/gh-patterns.png')",
@@ -236,8 +234,11 @@ function EventsCarousel() {
                 filter:               "drop-shadow(0 0 2px rgba(255,255,255,0.95)) drop-shadow(0 0 8px rgba(255,255,255,0.80)) drop-shadow(0 0 22px rgba(255,255,255,0.55))",
               }}
             >
-              by Design.
+              Ghana.
             </span>
+            {" "}<br/>Feel like home.
+            {/* Image-filled text: gh-patterns.png clipped to the letterforms */}
+            {/* Layered dark halos lift the text off the photo background */}
           </h1>
 
           {/* Social proof */}

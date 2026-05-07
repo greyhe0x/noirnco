@@ -2,14 +2,53 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   Cerebri Sans — local font faces
+   Files live in /public/fonts/ and are served as static assets.
+───────────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Cerebri Sans';
+  src: url('/fonts/CerebriSans-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cerebri Sans';
+  src: url('/fonts/CerebriSans-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cerebri Sans';
+  src: url('/fonts/CerebriSans-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cerebri Sans';
+  src: url('/fonts/CerebriSans-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cerebri Sans';
+  src: url('/fonts/CerebriSans-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    @theme inline — font families
-   "inline" prevents Tailwind from emitting a :root custom property, so the
-   next/font runtime variables (set on <html>) always win over static strings.
+   No longer referencing next/font CSS variables — use the face name directly.
 ───────────────────────────────────────────────────────────────────────────── */
 @theme inline {
-  --font-sans:    var(--font-plus-jakarta);
-  --font-heading: var(--font-inter);
-  --font-body:    var(--font-plus-jakarta);
+  --font-sans:    'Cerebri Sans', system-ui, sans-serif;
+  --font-heading: 'Cerebri Sans', system-ui, sans-serif;
+  --font-body:    'Cerebri Sans', system-ui, sans-serif;
   --font-mono:    ui-monospace, 'Cascadia Code', 'Courier New', monospace;
 }
 
@@ -117,7 +156,7 @@
   }
 
   body {
-    font-family: var(--font-plus-jakarta), system-ui, sans-serif;
+    font-family: 'Cerebri Sans', system-ui, sans-serif;
     font-size: 1rem;
     line-height: 1.6;
     background-color: var(--color-background);
@@ -129,7 +168,7 @@
   /* Heading font & size defaults — colour intentionally left unset so that
      text-white / text-primary utilities can override without a fight. */
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-inter), system-ui, sans-serif;
+    font-family: 'Cerebri Sans', system-ui, sans-serif;
     font-weight: 600;
     letter-spacing: -0.01em;
   }
