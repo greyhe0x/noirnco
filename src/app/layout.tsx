@@ -37,7 +37,7 @@ export const metadata: Metadata = {
       "Ghana's premier program management company. We design curated investor delegations, corporate programs, and diaspora experiences — delivered with precision and elevated hospitality.",
     images: [
       {
-        url:    "/images/forum-1.png",
+        url:    "/og-image.jpg",
         width:  1200,
         height: 630,
         alt:    "Noir & Co — Ghana Investor Forum Series, Accra",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title:       "Noir & Co — Ghana, by Design.",
     description:
       "Ghana's premier program management company. We design curated investor delegations, corporate programs, and diaspora experiences — delivered with precision and elevated hospitality.",
-    images: ["/images/forum-1.png"],
+    images: ["/og-image.jpg"],
   },
 
   robots: {
