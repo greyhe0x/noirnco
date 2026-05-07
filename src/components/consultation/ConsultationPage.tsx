@@ -12,7 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { BRAND } from "@/lib/constants";
 /* ─── Config ──────────────────────────────────────────────────────────────── */
-const WA_NUMBER = "233000000000"; // ← replace with real number
+const WA_NUMBER = "233026944977"; // +233 026 944 1977
 
 /* ─── Types ───────────────────────────────────────────────────────────────── */
 type StepId   = "name" | "intent" | "eventType" | "phone";
