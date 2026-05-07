@@ -36,7 +36,7 @@ export function CTASection() {
                 className="inline-flex items-center gap-2.5 bg-primary text-white font-heading font-semibold rounded-full px-8 py-4 hover:bg-golden-dark transition-all duration-200 shadow-[var(--shadow-primary)] hover:shadow-[0_8px_32px_rgba(252,136,62,0.45)] active:scale-[0.98] group"
                 style={{ fontSize: "1rem" }}
               >
-                Plan Your Experience
+                Tell us your goals.
                 <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
               </Link>
             </div>
@@ -47,7 +47,7 @@ export function CTASection() {
               className="mt-10 italic text-white/35"
               style={{ fontSize: "0.875rem" }}
             >
-              Tell us your goals. We’ll craft the experience around them together.
+              We’ll craft the experience around them together.
             </TextOnDark>
           </div>
         </div>

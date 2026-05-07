@@ -9,7 +9,7 @@ import { Container } from "@/components/ui";
 const SOCIALS = [
   { icon: IconInstagram, href: BRAND.social.instagram, label: "Instagram" },
   { icon: IconX,         href: BRAND.social.twitter,   label: "Twitter"   },
-  { icon: IconFacebook,  href: BRAND.social.facebook,  label: "Facebook"  },
+  // { icon: IconFacebook,  href: BRAND.social.facebook,  label: "Facebook"  },
   { icon: IconLinkedin,  href: BRAND.social.linkedin,  label: "LinkedIn"  },
 ];
 
@@ -24,9 +24,9 @@ export function Footer() {
               <Image
                 src="/logo.png"
                 alt={BRAND.name}
-                width={880}
+                width={1100}
                 height={1100}
-                className="h-10 w-auto brightness-0 invert"
+                className="h-10 w-auto scale-110"
               />
             </div>
             <p className="text-gray-400 font-body text-body-sm leading-relaxed max-w-sm mb-6">

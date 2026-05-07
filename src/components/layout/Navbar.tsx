@@ -36,7 +36,7 @@ export function Navbar() {
           "max-w-7xl mx-auto rounded-2xl transition-all duration-500 ease-out",
           scrolled
             ? "bg-white/95 backdrop-blur-xl shadow-[0_8px_40px_rgba(0,0,0,0.10)] border border-gray-100/80"
-            : "bg-[#0E1118]/55 backdrop-blur-md border border-white/[0.08]"
+            : "bg-[#0E1118]/75 backdrop-blur-md border border-white/[0.08]"
         )}
       >
         {/* ── Top bar ───────────────────────────────────────────────────── */}
@@ -51,7 +51,8 @@ export function Navbar() {
               height={1100}
               className={cn(
                 "h-9 w-auto transition-all duration-500",
-                onDark ? "brightness-0 invert opacity-90 group-hover:opacity-100" : ""
+                // onDark ? 
+                // "h-9 w-auto brightness-0 invert opacity-90 group-hover:opacity-100" // : "h-9 w-auto"
               )}
               priority
             />

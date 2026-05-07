@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { ThemeDevPanel } from "@/components/dev/ThemeDevPanel";
+import { ThemeLocalStorageHydrator } from "@/components/theme/ThemeLocalStorageHydrator";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://noirandco.com.gh";
 
@@ -77,6 +78,7 @@ export default function RootLayout({
       className="h-full antialiased"
     >
       <body className="min-h-full flex flex-col antialiased overflow-x-hidden">
+        <ThemeLocalStorageHydrator />
         {children}
         {process.env.NODE_ENV !== "production" ? <ThemeDevPanel /> : null}
       </body>

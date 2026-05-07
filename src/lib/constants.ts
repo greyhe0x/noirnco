@@ -10,7 +10,7 @@ export const BRAND = {
   social: {
     instagram: "#",
     twitter: "#",
-    facebook: "#",
+    // facebook: "#",
     linkedin: "#",
   },
 } as const;

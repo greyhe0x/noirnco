@@ -38,10 +38,6 @@ const FAQS = [
     a: "Every experience we deliver is fully customized. We take the time to understand your objectives and design a program or itinerary that aligns precisely with your goals, preferences, and timeline.",
   },
   {
-    q: "What does a 'structured experience' actually include?",
-    a: "It depends on your goals  but typically this means curated stakeholder meetings, expert-led briefings, site visits, cultural immersions, premium accommodation, private transportation, and on-ground concierge support throughout. We design the full arc of your time in Ghana around a clear objective.",
-  },
-  {
     q: "Do you only operate in Accra?",
     a: "Accra is our operational base, but we work nationwide. We've delivered programs in Kumasi, Takoradi, Cape Coast, and across the Volta and Eastern regions. If your itinerary requires it, we go where you need to go.",
   },

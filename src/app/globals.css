@@ -58,15 +58,16 @@
 ───────────────────────────────────────────────────────────────────────────── */
 @theme {
   /* ── Brand ── */
-  /* --color-golden:         #FC883E; */
-  --color-golden:         #FC883E;
-  /* --color-primary:         #2596be; */
-  /* --color-primary:         #5a3d1f; */
-  --color-primary:         #FC883E;
-  /* --color-primary-light:   #FDA666; */
-  --color-primary-light:   #2596be;
-  --color-primary-dark:    #E86A1F;
-  --color-secondary:       #1B1F2A;
+  --color-page:            #1A1A1A;
+  --color-background:      #0B1A37;
+  --color-surface:         #FFFFFF;
+
+  --color-primary:         #CCB074;
+  --color-primary-dark:    #CEA973;
+  --color-primary-light:   #2596BE;
+  --color-golden:          #FC883E;
+
+  --color-secondary:       #002C46;
 
 
   /* --color-secondary:       #2596be; */
@@ -74,10 +75,6 @@
   --color-secondary-dark:  #0E1118;
 
   /* ── Surface ── */
-  /* Brand direction: blue page background, gold accents */
-  --color-page:           #2596be;
-  --color-background:      #FFFFFF;
-  --color-surface:         #FFFFFF;
   --color-surface-muted:   #FFF8F3;
 
   /* ── Alerts ── */
@@ -162,7 +159,7 @@
     font-family: 'Cerebri Sans', system-ui, sans-serif;
     font-size: 1rem;
     line-height: 1.6;
-    background-color: var(--color-page);
+    background-color: var(--color-background);
     color: var(--color-secondary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

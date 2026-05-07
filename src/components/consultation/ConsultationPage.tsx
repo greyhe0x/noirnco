@@ -2,16 +2,39 @@
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import {
-  ArrowLeft, ArrowRight, MessageCircle, Sparkles,
-  CheckCircle2, ChevronRight, CornerDownLeft,
+  ArrowLeft,
+  ArrowRight,
+  CalendarCheck,
+  CheckCircle2,
+  ChevronRight,
+  Compass,
+  CornerDownLeft,
+  Mail,
+  MessageCircle,
+  Target,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BRAND } from "@/lib/constants";
+import { ChipStep } from "@/components/consultation/ChipStep";
 import { EventSlideshow } from "@/components/consultation/EventSlideshow";
-import { EVENT_TYPES, INTENT_OPTIONS } from "@/components/consultation/consultationData";
+import {
+  DECIDING_AUDIENCES,
+  DECIDING_GOALS,
+  EVENT_TYPES,
+  EXPLORING_INTERESTS,
+  EXPLORING_INTERESTS_OTHER,
+  EXPLORING_INTERESTS_NOT_SURE,
+  EXPLORING_TIMEFRAMES,
+  EVENT_TYPE_OTHER,
+  INTENT_OPTIONS,
+  PLANNING_DURATIONS,
+  PLANNING_GROUP_SIZES,
+  PLANNING_TIMEFRAMES,
+} from "@/components/consultation/consultationData";
 import {
   COUNTRY_CALLING_CODES,
   formatCountryCallingCodeCompactLabel,
@@ -21,13 +44,34 @@ import {
 const WA_NUMBER = "+233551204941"; // +233 55 120 4941
 
 /* ─── Types ───────────────────────────────────────────────────────────────── */
-type StepId = "name" | "intent" | "eventType" | "contact";
+type StepId =
+  | "name"
+  | "intent"
+  | "interests"
+  | "exploreWhen"
+  | "goal"
+  | "audience"
+  | "eventType"
+  | "eventTypeOther"
+  | "planWhen"
+  | "groupSize"
+  | "duration"
+  | "contact";
 type Intent   = "exploring" | "deciding" | "planning";
 type ContactMethod = "whatsapp" | "email";
 interface FormData {
   name:      string;
   intent:    Intent | "";
+  interests: string[];
+  otherInterest: string;
+  exploreWhen: string;
+  goal: string;
+  audience: string;
   eventType: string;
+  eventTypeOther: string;
+  planWhen: string;
+  groupSize: string;
+  duration: string;
   contactMethod: ContactMethod;
   phoneCallingCode: string; // e.g. "+233"
   phoneNational: string; // e.g. "551204941"
@@ -37,8 +81,30 @@ interface FormData {
 /* ─── Helpers ─────────────────────────────────────────────────────────────── */
 const first = (name: string) => name.trim().split(/\s+/)[0] || name.trim();
 
-function getSteps(intent: Intent | ""): StepId[] {
-  return ["name", "intent", ...(intent === "planning" ? (["eventType"] as StepId[]) : []), "contact"];
+const INTENT_ICON: Record<Intent, React.ComponentType<{ size?: number; className?: string }>> = {
+  exploring: Compass,
+  deciding: Target,
+  planning: CalendarCheck,
+};
+
+function getSteps(d: Pick<FormData, "intent" | "eventType">): StepId[] {
+  const includeEventTypeOther = d.intent === "planning" && d.eventType === EVENT_TYPE_OTHER;
+  const middle: StepId[] =
+    d.intent === "planning"
+      ? [
+          "eventType",
+          ...(includeEventTypeOther ? (["eventTypeOther"] as StepId[]) : []),
+          "planWhen",
+          "groupSize",
+          "duration",
+        ]
+      : d.intent === "deciding"
+        ? ["goal", "audience"]
+        : d.intent === "exploring"
+          ? ["interests", "exploreWhen"]
+          : [];
+    [];
+  return ["name", "intent", ...middle, "contact"];
 }
 
 function buildContactLine(d: FormData) {
@@ -47,19 +113,60 @@ function buildContactLine(d: FormData) {
   return `📱 *WhatsApp:* ${phone}`;
 }
 
+function buildInterestsLine(d: FormData) {
+  const meaningful = d.interests.filter(
+    (i) => i !== EXPLORING_INTERESTS_NOT_SURE && i !== EXPLORING_INTERESTS_OTHER
+  );
+  if (meaningful.length === 0) return "";
+  const extraOther = d.otherInterest?.trim()
+    ? `\n*Other:* ${d.otherInterest.trim()}`
+    : "";
+  return `\n*Interested in:* ${meaningful.join(", ")}${extraOther}`;
+}
+
+function buildExploreWhenLine(d: FormData) {
+  return d.exploreWhen ? `\n*Visiting:* ${d.exploreWhen}` : "";
+}
+
+function buildExploringExtras(d: FormData) {
+  const extras = `${buildInterestsLine(d)}${buildExploreWhenLine(d)}`;
+  return extras ? `\n${extras}` : "";
+}
+
+function buildPlanningSummary(d: FormData) {
+  const parts = [
+    d.groupSize ? `${d.groupSize} people` : "",
+    d.duration,
+    d.planWhen,
+  ].filter(Boolean);
+  if (parts.length === 0) return "";
+  return `\n\n*${d.eventType}*  ${parts.join(", ")}.`;
+}
+
 function buildWAMessage(d: FormData) {
   const fn = first(d.name);
   if (d.intent === "exploring")
-    return `Hello Noir & Co! 👋\n\nMy name is ${fn} and I'm exploring Ghana  curious about the opportunities and experiences you can help design.\n\nWould love to learn more!\n\n${buildContactLine(d)}`;
-  if (d.intent === "deciding")
-    return `Hello Noir & Co! 🤔\n\nI'm ${fn}. I have a goal in mind  investment, market entry, or a diaspora visit  but I'm still figuring out the right approach.\n\nCould we have a quick discovery call?\n\n${buildContactLine(d)}`;
-  return `Hello Noir & Co! 🗓️\n\nI'm ${fn} and I'm ready to plan a *${d.eventType}* in Ghana. I'd love to get started!\n\n${buildContactLine(d)}`;
+    return `Hello Noir & Co! 👋\n\nMy name is ${fn} and I'm exploring Ghana  curious about the opportunities and experiences you can help design.\n\nWould love to learn more!${buildExploringExtras(d)}\n\n${buildContactLine(d)}`;
+  if (d.intent === "deciding") {
+    const audience = d.audience ? ` (${d.audience})` : "";
+    const goal = d.goal || "a clear goal";
+    return `Hello Noir & Co! 🤔\n\nI'm ${fn} and I have a goal in mind: *${goal}*${audience}.\n\nCould we have a quick discovery call?\n\n${buildContactLine(d)}`;
+  }
+  return `Hello Noir & Co! 🗓️\n\nI'm ${fn} and I'm ready to plan a *${d.eventType}* in Ghana. I'd love to get started!${buildPlanningSummary(d)}\n\n${buildContactLine(d)}`;
 }
 
 function buildEmailSubject(d: FormData) {
   const fn = first(d.name);
-  if (d.intent === "exploring") return `Consultation  Exploring Ghana (${fn})`;
-  if (d.intent === "deciding") return `Consultation  Discovery call (${fn})`;
+  if (d.intent === "exploring") {
+    const meaningful = d.interests.filter((i) => i !== EXPLORING_INTERESTS_NOT_SURE);
+    if (meaningful.length === 1) return `Consultation  Exploring Ghana: ${meaningful[0]} (${fn})`;
+    return `Consultation  Exploring Ghana (${fn})`;
+  }
+  if (d.intent === "deciding") {
+    if (d.goal) return `Consultation  Discovery call: ${d.goal} (${fn})`;
+    return `Consultation  Discovery call (${fn})`;
+  }
+  if (d.groupSize) return `Consultation  Planning: ${d.eventType} for ${d.groupSize} (${fn})`;
   return `Consultation  Planning: ${d.eventType} (${fn})`;
 }
 
@@ -87,10 +194,50 @@ function getQuestion(step: StepId, d: FormData): { q: string; hint: string } {
         q:    `Nice to meet you, ${fn}! What brings you here?`,
         hint: "Pick the option that best describes where you are right now.",
       };
+    case "interests":
+      return {
+        q:    `What pulls you toward Ghana, ${fn}?`,
+        hint: "Pick anything that sparks your curiosity  you can choose more than one.",
+      };
+    case "exploreWhen":
+      return {
+        q:    "When are you thinking of visiting?",
+        hint: "Roughly is fine  helps us tailor what we send.",
+      };
+    case "goal":
+      return {
+        q:    `What's the goal, ${fn}?`,
+        hint: "Pick the closest fit  we'll dig deeper on the call.",
+      };
+    case "audience":
+      return {
+        q:    "Who's this for?",
+        hint: "Helps us shape the right kind of conversation.",
+      };
     case "eventType":
       return {
         q:    "What kind of program are you planning?",
         hint: "Select the closest match  we design all of these.",
+      };
+    case "eventTypeOther":
+      return {
+        q:    "Tell us what you're planning.",
+        hint: "One line is perfect  we'll follow up with details.",
+      };
+    case "planWhen":
+      return {
+        q:    "When is it (or roughly when)?",
+        hint: "Pick a window  we'll firm dates later.",
+      };
+    case "groupSize":
+      return {
+        q:    "How many people?",
+        hint: "An estimate is enough.",
+      };
+    case "duration":
+      return {
+        q:    "How long?",
+        hint: "From a quick visit to a multi-week program.",
       };
     case "contact":
       if (d.intent === "exploring")
@@ -123,7 +270,16 @@ export function ConsultationPage() {
   const [formData,  setFormData]  = useState<FormData>({
     name: "",
     intent: "",
+    interests: [],
+    otherInterest: "",
+    exploreWhen: "",
+    goal: "",
+    audience: "",
     eventType: "",
+    eventTypeOther: "",
+    planWhen: "",
+    groupSize: "",
+    duration: "",
     contactMethod: "whatsapp",
     phoneCallingCode: "+233",
     phoneNational: "",
@@ -137,6 +293,9 @@ export function ConsultationPage() {
   const [phoneNational, setPhoneNational] = useState("");
   const [email, setEmail] = useState("");
   const [useCustomCallingCode, setUseCustomCallingCode] = useState(false);
+  const [interests, setInterests] = useState<string[]>([]);
+  const [otherInterest, setOtherInterest] = useState("");
+  const [eventTypeOther, setEventTypeOther] = useState("");
 
   /* ── Entrance animation ─────────────────────────────────────────────── */
   useGSAP(() => {
@@ -160,7 +319,7 @@ export function ConsultationPage() {
   }, [step, animDir]);
 
   /* ── Derive step list + progress ────────────────────────────────────── */
-  const steps    = getSteps(formData.intent);
+  const steps    = getSteps(formData);
   const stepIdx  = steps.indexOf(step);
   const progress = (stepIdx + 1) / steps.length;
   const isLast   = stepIdx === steps.length - 1;
@@ -181,9 +340,30 @@ export function ConsultationPage() {
       setInputErr("");
       return;
     }
+    if (step === "interests") {
+      setInterests(formData.interests);
+      setOtherInterest(formData.otherInterest);
+      setInputErr("");
+      return;
+    }
+    if (step === "eventTypeOther") {
+      setEventTypeOther(formData.eventTypeOther);
+      setInputErr("");
+      return;
+    }
     setInputVal("");
     setInputErr("");
-  }, [step, formData.name, formData.contactMethod, formData.phoneCallingCode, formData.phoneNational, formData.email]);
+  }, [
+    step,
+    formData.name,
+    formData.contactMethod,
+    formData.phoneCallingCode,
+    formData.phoneNational,
+    formData.email,
+    formData.interests,
+    formData.otherInterest,
+    formData.eventTypeOther,
+  ]);
 
   const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 
@@ -193,6 +373,14 @@ export function ConsultationPage() {
 
     // Validate text inputs
     if (step === "name"  && !newData.name.trim())  { setInputErr("Please tell us your name."); return; }
+    if (step === "interests" && newData.interests.length === 0) {
+      setInputErr("Pick at least one  or 'Not sure yet'.");
+      return;
+    }
+    if (step === "eventTypeOther" && !newData.eventTypeOther.trim()) {
+      setInputErr("Please tell us what you're planning.");
+      return;
+    }
     if (step === "contact") {
       if (newData.contactMethod === "email") {
         if (!newData.email.trim()) { setInputErr("Please enter your email address."); return; }
@@ -203,7 +391,7 @@ export function ConsultationPage() {
       }
     }
 
-    const nextSteps = getSteps(newData.intent);
+    const nextSteps = getSteps(newData);
     const nextIdx   = nextSteps.indexOf(step) + 1;
     const next      = nextSteps[nextIdx];
 
@@ -248,6 +436,11 @@ export function ConsultationPage() {
         advance({ name: inputVal });
         return;
       }
+      if (step === "eventTypeOther") {
+        const clean = eventTypeOther.trim();
+        advance({ eventType: clean, eventTypeOther: "" });
+        return;
+      }
       if (step === "contact") {
         if (contactMethod === "email") {
           advance({ contactMethod, email });
@@ -261,18 +454,24 @@ export function ConsultationPage() {
   /* ── Success screen ─────────────────────────────────────────────────── */
   if (submitted) {
     return (
-      <div className="h-screen bg-background flex items-center justify-center px-6">
+      <div className="h-screen bg-white flex items-center justify-center px-6">
         <div className="flex flex-col items-center text-center gap-6 max-w-sm">
           <div className="w-20 h-20 rounded-full bg-[#25D366]/10 flex items-center justify-center">
-            <CheckCircle2 size={40} className="text-[#25D366]" />
+             <Image
+                src="/send-svgrepo-com.svg"
+                alt={BRAND.name}
+                width={1100}
+                height={1100}
+                className="h-10 w-auto scale-110"
+              />
           </div>
           <div>
             <h2 className="font-heading font-bold text-secondary mb-2" style={{ fontSize: "1.75rem" }}>
               Opening WhatsApp…
             </h2>
             <p className="font-body text-gray-500" style={{ lineHeight: 1.75 }}>
-              Your details are pre-filled. Just hit <strong>Send</strong> and we&apos;ll
-              be in touch very soon, {first(formData.name)}.
+              Your details are pre-filled. <br />Just hit <strong>Send</strong>{" "} and we&apos;ll be
+              in touch very soon, {first(formData.name)}.
             </p>
           </div>
           <Link href="/"
@@ -402,7 +601,14 @@ export function ConsultationPage() {
                       "border-gray-200 hover:border-primary/60 hover:bg-primary/[0.04]"
                     )}
                   >
-                    <span className="text-2xl flex-shrink-0 leading-none">{opt.emoji}</span>
+                    {(() => {
+                      const Icon = INTENT_ICON[opt.id];
+                      return (
+                        <span className="shrink-0 leading-none">
+                          <Icon size={22} className="text-secondary group-hover:text-primary transition-colors duration-150" />
+                        </span>
+                      );
+                    })()}
                     <div>
                       <p className="font-heading font-semibold text-secondary group-hover:text-primary transition-colors duration-150"
                          style={{ fontSize: "0.9375rem" }}>
@@ -418,24 +624,197 @@ export function ConsultationPage() {
               </div>
             )}
 
-            {/* ── EVENT TYPE step ───────────────────────────────────── */}
-            {step === "eventType" && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                {EVENT_TYPES.map((type) => (
+            {/* ── INTERESTS step (exploring only) ───────────────────── */}
+            {step === "interests" && (
+              <div className="flex flex-col gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  {EXPLORING_INTERESTS.map((interest) => {
+                    const selected = interests.includes(interest);
+                    return (
+                      <button
+                        key={interest}
+                        type="button"
+                        onClick={() => {
+                          if (interest === EXPLORING_INTERESTS_NOT_SURE) {
+                            setInterests(selected ? [] : [EXPLORING_INTERESTS_NOT_SURE]);
+                            setOtherInterest("");
+                          } else {
+                            const withoutNotSure = interests.filter(
+                              (i) => i !== EXPLORING_INTERESTS_NOT_SURE
+                            );
+                            const withoutOther = withoutNotSure.filter((i) => i !== EXPLORING_INTERESTS_OTHER);
+                            const next =
+                              selected
+                                ? withoutOther.filter((i) => i !== interest)
+                                : [...withoutOther, interest];
+                            setInterests(next);
+                            if (!next.includes(EXPLORING_INTERESTS_OTHER)) setOtherInterest("");
+                            setInputErr("");
+                            return;
+                            setInterests(
+                              selected
+                                ? withoutNotSure.filter((i) => i !== interest)
+                                : [...withoutNotSure, interest]
+                            );
+                          }
+                          setInputErr("");
+                        }}
+                        aria-pressed={selected}
+                        className={cn(
+                          "px-4 py-3.5 rounded-xl border text-left font-body font-medium",
+                          "transition-all duration-150 cursor-pointer",
+                          selected
+                            ? "border-primary bg-primary/[0.06] text-primary"
+                            : "border-gray-200 text-secondary hover:border-primary hover:bg-primary/[0.04] hover:text-primary"
+                        )}
+                        style={{ fontSize: "0.875rem" }}
+                      >
+                        {interest}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {interests.includes(EXPLORING_INTERESTS_OTHER) && (
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={otherInterest}
+                      onChange={(e) => setOtherInterest(e.target.value)}
+                      placeholder="Optional: tell us what you're exploring"
+                      className={cn(
+                        "w-full bg-transparent pb-3 pt-1 font-body text-secondary placeholder:text-gray-300 outline-none",
+                        "border-0 border-b-2 transition-colors duration-200",
+                        "border-gray-200 focus:border-primary"
+                      )}
+                      style={{ fontSize: "1.0rem" }}
+                    />
+                  </div>
+                )}
+
+                {inputErr && (
+                  <p className="font-body text-red-400" style={{ fontSize: "0.78rem" }}>{inputErr}</p>
+                )}
+
+                <div className="flex items-center justify-between">
+                  <span className="font-body text-gray-300" style={{ fontSize: "0.75rem" }}>
+                    {interests.length === 0
+                      ? "Pick one or more"
+                      : `${interests.length} selected`}
+                  </span>
                   <button
-                    key={type}
-                    onClick={() => advance({ eventType: type })}
-                    className={cn(
-                      "px-4 py-3.5 rounded-xl border text-left font-body font-medium",
-                      "transition-all duration-150 cursor-pointer",
-                      "border-gray-200 text-secondary hover:border-primary hover:bg-primary/[0.04] hover:text-primary"
-                    )}
+                    type="button"
+                    onClick={() => advance({ interests, otherInterest })}
+                    className="inline-flex items-center gap-2 bg-primary text-white font-heading font-semibold rounded-full px-5 py-2.5 hover:bg-primary-dark transition-all duration-200 shadow-[var(--shadow-primary)]"
                     style={{ fontSize: "0.875rem" }}
                   >
-                    {type}
+                    Continue <ArrowRight size={14} />
                   </button>
-                ))}
+                </div>
               </div>
+            )}
+
+            {/* ── EXPLORE TIMEFRAME step (exploring) ────────────────── */}
+            {step === "exploreWhen" && (
+              <ChipStep
+                options={EXPLORING_TIMEFRAMES}
+                onPick={(value) => advance({ exploreWhen: value })}
+                columns={2}
+              />
+            )}
+
+            {/* ── GOAL step (deciding) ──────────────────────────────── */}
+            {step === "goal" && (
+              <ChipStep
+                options={DECIDING_GOALS}
+                onPick={(value) => advance({ goal: value })}
+              />
+            )}
+
+            {/* ── AUDIENCE step (deciding) ──────────────────────────── */}
+            {step === "audience" && (
+              <ChipStep
+                options={DECIDING_AUDIENCES}
+                onPick={(value) => advance({ audience: value })}
+                columns={2}
+              />
+            )}
+
+            {/* ── EVENT TYPE step (planning) ────────────────────────── */}
+            {step === "eventType" && (
+              <ChipStep
+                options={EVENT_TYPES}
+                onPick={(value) => advance({ eventType: value })}
+              />
+            )}
+
+            {/* ── EVENT TYPE OTHER step (planning) ───────────────────── */}
+            {step === "eventTypeOther" && (
+              <div className="flex flex-col gap-5">
+                <div className="relative">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    autoComplete="off"
+                    placeholder="e.g., Leadership retreat, study tour, conference…"
+                    value={eventTypeOther}
+                    onChange={(e) => { setEventTypeOther(e.target.value); setInputErr(""); }}
+                    onKeyDown={handleKeyDown}
+                    className={cn(
+                      "w-full bg-transparent pb-3 pt-1 font-body text-secondary placeholder:text-gray-300 outline-none",
+                      "border-0 border-b-2 transition-colors duration-200",
+                      inputErr ? "border-red-400" : "border-gray-200 focus:border-primary"
+                    )}
+                    style={{ fontSize: "clamp(1.1rem, 2vw, 1.4rem)" }}
+                  />
+                  {inputErr && (
+                    <p className="mt-2 font-body text-red-400" style={{ fontSize: "0.78rem" }}>{inputErr}</p>
+                  )}
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 font-body text-gray-300" style={{ fontSize: "0.75rem" }}>
+                    <CornerDownLeft size={11} /> press Enter
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const clean = eventTypeOther.trim();
+                      advance({ eventType: clean, eventTypeOther: "" });
+                    }}
+                    className="inline-flex items-center gap-2 bg-primary text-white font-heading font-semibold rounded-full px-5 py-2.5 hover:bg-primary-dark transition-all duration-200 shadow-[var(--shadow-primary)]"
+                    style={{ fontSize: "0.875rem" }}
+                  >
+                    Continue <ArrowRight size={14} />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* ── PLAN TIMEFRAME step (planning) ────────────────────── */}
+            {step === "planWhen" && (
+              <ChipStep
+                options={PLANNING_TIMEFRAMES}
+                onPick={(value) => advance({ planWhen: value })}
+                columns={2}
+              />
+            )}
+
+            {/* ── GROUP SIZE step (planning) ────────────────────────── */}
+            {step === "groupSize" && (
+              <ChipStep
+                options={PLANNING_GROUP_SIZES}
+                onPick={(value) => advance({ groupSize: value })}
+                columns={3}
+              />
+            )}
+
+            {/* ── DURATION step (planning) ──────────────────────────── */}
+            {step === "duration" && (
+              <ChipStep
+                options={PLANNING_DURATIONS}
+                onPick={(value) => advance({ duration: value })}
+                columns={3}
+              />
             )}
 
             {/* ── PHONE step ────────────────────────────────────────── */}
@@ -649,7 +1028,7 @@ export function ConsultationPage() {
               className="flex items-center gap-3 rounded-2xl px-4 py-3 border border-gray-200 group hover:border-primary/40 hover:bg-primary/[0.04] transition-colors"
             >
               <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                <Sparkles size={14} className="text-white" />
+                <Mail size={14} className="text-white" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-body font-semibold text-secondary group-hover:text-primary transition-colors" style={{ fontSize: "0.8rem" }}>
