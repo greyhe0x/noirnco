@@ -208,20 +208,36 @@ function EventsCarousel() {
       />
 
       {/* ── Brand / hero content ─────────────────────────────────────────── */}
-      <div className="absolute inset-0 flex flex-col justify-center px-5 sm:px-10 md:px-16 xl:px-24 pt-20 pb-12">
+      <div className="absolute inset-0 flex flex-col justify-end sm:justify-center px-5 sm:px-10 md:px-16 xl:px-24 pt-20 pb-10 sm:pb-12">
         <div className="max-w-2xl flex flex-col gap-5">
 
           {/* Headline */}
           <h1
             className="font-heading font-bold text-white"
             style={{
-              fontSize: "clamp(2.75rem, 7vw, 5.5rem)",
+              fontSize:   "clamp(2.75rem, 7vw, 5.5rem)",
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
+              /* Shadow on the white "Ghana," portion */
+              textShadow: "0 2px 24px rgba(0,0,0,0.55), 0 8px 48px rgba(0,0,0,0.35)",
             }}
           >
-            Ghana,{" "}
-            <span className="text-gradient-primary">by Design.</span>
+            Ghana,{" "}<br/>
+            {/* Image-filled text: gh-patterns.png clipped to the letterforms */}
+            {/* Layered dark halos lift the text off the photo background */}
+            <span
+              style={{
+                backgroundImage:      "url('/images/gh-patterns.png')",
+                backgroundClip:       "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor:  "transparent",
+                backgroundSize:       "320px auto",
+                backgroundPosition:   "center",
+                filter:               "drop-shadow(0 0 2px rgba(255,255,255,0.95)) drop-shadow(0 0 8px rgba(255,255,255,0.80)) drop-shadow(0 0 22px rgba(255,255,255,0.55))",
+              }}
+            >
+              by Design.
+            </span>
           </h1>
 
           {/* Social proof */}
@@ -259,7 +275,7 @@ function EventsCarousel() {
             style={{ fontSize: "clamp(0.875rem, 1.4vw, 1rem)", lineHeight: 1.8 }}
           >
             A program management and hospitality company specialising in structured,
-            insight-driven experiences in Ghana — for investors, businesses, and the diaspora.
+            insight-driven experiences in Ghana for investors, businesses, and the diaspora.
           </p>
 
           {/* CTA */}
@@ -278,7 +294,7 @@ function EventsCarousel() {
 
       {/* ── Scroll hint ──────────────────────────────────────────────────── */}
       <div
-        className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 pointer-events-none select-none"
+        className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 pointer-events-none select-none max-md:hidden"
         style={{ opacity: 0.35 }}
       >
         <span

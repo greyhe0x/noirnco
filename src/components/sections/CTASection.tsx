@@ -21,7 +21,12 @@ export function CTASection() {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(252,136,62,0.15)_0%,_transparent_60%)] pointer-events-none" />
 
           <div className="relative z-10 mx-auto">
-            <Heading as="h2" color="white" className="mb-5">
+            <Heading
+              as="h2"
+              color="white"
+              className="mb-5"
+              style={{ fontSize: "clamp(1.6rem, 5vw, 3rem)" }}
+            >
               Ready to Enter Ghana<br />with Confidence?
             </Heading>
 

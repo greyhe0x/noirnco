@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { HeroEventsSection } from "@/components/sections/HeroEventsSection";
 import { StatsSection } from "@/components/sections/StatsSection";
+import { PartnersRibbon } from "@/components/sections/PartnersRibbon";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { QuoteSection } from "@/components/sections/QuoteSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
@@ -16,6 +17,7 @@ export default function Home() {
       <main className="flex-1">
         <HeroEventsSection />
         <StatsSection />
+        <PartnersRibbon />
         <ServicesSection />
         <QuoteSection />
         <TestimonialsSection />

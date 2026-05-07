@@ -16,7 +16,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   display: "swap",
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://noirnco.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://noirandco.com.gh";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -90,7 +90,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${plusJakartaSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col antialiased">{children}</body>
+      <body className="min-h-full flex flex-col antialiased overflow-x-hidden">{children}</body>
     </html>
   );
 }

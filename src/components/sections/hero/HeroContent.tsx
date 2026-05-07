@@ -66,7 +66,7 @@ export function HeroContent() {
         style={{ fontSize: "clamp(0.875rem, 1.4vw, 1rem)", lineHeight: 1.75 }}
       >
         A program management and hospitality company specialising in structured,
-        insight-driven experiences in Ghana — for investors, businesses, and the diaspora.
+        insight-driven experiences in Ghana for investors, businesses, and the diaspora.
       </p>
 
       {/* CTA — single button on hero */}

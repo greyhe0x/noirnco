@@ -9,14 +9,14 @@ const SERVICES = [
   {
     title: "Investor & Corporate Hosting",
     description:
-      "Executive visits, conferences, startup showcases, private dinners, and curated networking events — designed for impact and deal-flow.",
+      "Executive visits, conferences, startup showcases, private dinners, and curated networking events designed for impact and deal-flow.",
     image: "/images/service-corporate-hosting.png",
     tag: "Corporate",
   },
   {
     title: "Bespoke Logistics",
     description:
-      "Comprehensive coordination of arrivals, premium accommodation, and private transportation — seamlessly executed from touchdown to departure.",
+      "Comprehensive coordination of arrivals, premium accommodation, private transportation and seamlessly executed from touchdown to departure.",
     image: "/images/service-logistics.png",
     tag: "Logistics",
   },
@@ -30,7 +30,7 @@ const SERVICES = [
   {
     title: "Personalised Concierge",
     description:
-      "Tailored, on-demand support for both short-term visits and extended stays — your dedicated partner on the ground in Ghana.",
+      "Tailored, on-demand support for both short-term visits and extended stays. Your dedicated partner on the ground in Ghana.",
     image: "/images/service-concierge.png",
     tag: "Concierge",
   },
@@ -82,7 +82,7 @@ export function ServicesSection() {
             One Partner. <br/>Every Detail Covered.
           </Heading>
           <Text color="muted" className="text-center">
-            From the first briefing to the final farewell — we design, manage, and
+            From the first briefing to the final farewell. We design, manage, and
             deliver every element of your Ghana experience.
           </Text>
         </div>

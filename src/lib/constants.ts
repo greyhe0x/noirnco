@@ -2,7 +2,7 @@ export const BRAND = {
   name: "Noir & Co",
   tagline: "Ghana, by Design.",
   description:
-    "A program management and hospitality company specialising in structured, insight-driven experiences in Ghana — for investors, businesses, and the diaspora.",
+    "A program management and hospitality company specialising in structured, insight-driven experiences in Ghana for investors, businesses, and the diaspora.",
   email: "hello@noirandco.com",
   phone: "+233 XX XXX XXXX",
   location: "Accra, Ghana",

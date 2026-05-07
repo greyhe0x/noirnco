@@ -19,9 +19,11 @@
 ───────────────────────────────────────────────────────────────────────────── */
 @theme {
   /* ── Brand ── */
+  /* --color-golden:         #FC883E; */
   --color-golden:         #FC883E;
   /* --color-primary:         #2596be; */
-  --color-primary:         #5a3d1f;
+  /* --color-primary:         #5a3d1f; */
+  --color-primary:         #FC883E;
   /* --color-primary-light:   #FDA666; */
   --color-primary-light:   #2596be;
   --color-primary-dark:    #E86A1F;
@@ -186,6 +188,26 @@
 }
 .animate-fade-in {
   animation: fadeInUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Testimonial marquee */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+.marquee-track-left {
+  animation: marquee-left 40s linear infinite;
+}
+.marquee-track-right {
+  animation: marquee-right 38s linear infinite;
+}
+.marquee-track-left:hover,
+.marquee-track-right:hover {
+  animation-play-state: paused;
 }
 
 /* Scrollbar */
