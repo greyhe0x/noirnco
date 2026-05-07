@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui";
 import { AvatarGroup } from "@/components/ui/AvatarGroup";
+import router from "next/router";
 
 const PARTNER_LOGOS = [
   { name: "KIC", abbr: "KIC" },
@@ -71,7 +72,9 @@ export function HeroContent() {
 
       {/* CTA — single button on hero */}
       <div data-animate className="opacity-0">
-        <Button size="lg" variant="primary" className="group">
+        <Button size="lg" variant="primary" className="group"
+        onClick={() => router.push("/consultation")}
+        >
           Plan Your Experience
           <ChevronRight
             size={18}

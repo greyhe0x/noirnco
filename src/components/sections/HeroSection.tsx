@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ArrowRight, Play } from "lucide-react";
 import { Button, Container, Eyebrow } from "@/components/ui";
+import router from "next/router";
 
 export function HeroSection() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
@@ -78,7 +79,9 @@ export function HeroSection() {
           ref={actionsRef}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <Button size="lg" variant="primary" className="group">
+          <Button size="lg" variant="primary" className="group"
+          onClick={() => router.push("/consultation")}
+          >
             Plan Your Event
             <ArrowRight
               size={18}
@@ -89,6 +92,7 @@ export function HeroSection() {
             size="lg"
             variant="ghost"
             className="text-white border border-white/30 hover:bg-white/10 rounded-full"
+            onClick={() => router.push("/about")}
           >
             <Play size={16} className="fill-white" />
             Watch Our Story

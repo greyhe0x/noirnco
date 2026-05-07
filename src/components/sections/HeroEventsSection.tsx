@@ -7,6 +7,7 @@ import { ChevronRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui";
 import { AvatarGroup } from "@/components/ui/AvatarGroup";
 import Link from "next/link";
+import router from "next/router";
 
 // Commented out — hero panel hidden for now
 // import { useGSAP } from "@gsap/react";
@@ -281,7 +282,9 @@ function EventsCarousel() {
 
           {/* CTA */}
           <div>
-            <Button variant="primary" size="lg" className="group">
+            <Button variant="primary" size="lg" className="group" 
+            onClick={() => router.push("/consultation")}
+            >
               Plan Your Experience
               <ChevronRight
                 size={18}

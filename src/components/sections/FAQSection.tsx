@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { ChevronDown, MessageCircle } from "lucide-react";
 import { Container, Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import router from "next/router";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -205,6 +206,7 @@ export function FAQSection() {
               variant="primary"
               size="md"
               className="w-fit gap-2"
+              onClick={() => router.push("/consultation")}
             >
               <MessageCircle size={16} />
               Speak to Our Team
