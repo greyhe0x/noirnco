@@ -262,7 +262,7 @@ function EventsCarousel() {
                 className="font-heading font-bold text-white leading-none"
                 style={{ fontSize: "0.9375rem" }}
               >
-                270+ Participants
+                1201+ Participants
               </p>
               <p
                 className="font-body text-white/55"

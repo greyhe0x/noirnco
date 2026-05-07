@@ -54,7 +54,7 @@ export function HeroContent() {
         <AvatarGroup count={5} size="md" />
         <div>
           <TextOnLight as="p" weight="semibold" className="leading-none" style={{ fontSize: "0.9375rem" }}>
-            270+ Participants
+            1201+ Participants
           </TextOnLight>
           <TextOnLight as="p" emphasis="muted" style={{ fontSize: "0.71875rem" }}>
             hosted across 8+ global markets
