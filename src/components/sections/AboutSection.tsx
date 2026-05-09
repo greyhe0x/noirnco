@@ -20,7 +20,7 @@ gsap.registerPlugin(ScrollTrigger);
 const SECTIONS = [
   {
     id: "about-1",
-    image: "/images/about-programs.png",
+    image: "/images/about-programs2.png",
     imageAlt: "Noir & Co program management team at work",
     badge: "15+ Countries",
     badgeSub: "Global reach, local expertise",
