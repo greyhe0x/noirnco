@@ -53,7 +53,7 @@ export const SERVICES = [
 
 export const STATS = [
   { value: "1201+", label: "Participants Hosted" },
-  { value: "15+",   label: "Countries Served"      },
+  { value: "15+",   label: "Programs and Events Hosted"      },
   { value: "40+",  label: "Startups Supported"  },
   { value: "98%",  label: "Satisfaction Rate"   },
 ] as const;

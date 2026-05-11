@@ -57,7 +57,7 @@ export function HeroContent() {
             1201+ Participants
           </TextOnLight>
           <TextOnLight as="p" emphasis="muted" style={{ fontSize: "0.71875rem" }}>
-            hosted across 15+ countries
+            hosted from 15+ countries
           </TextOnLight>
         </div>
       </div>

@@ -268,7 +268,7 @@ function EventsCarousel() {
                 className="font-body text-white/55"
                 style={{ fontSize: "0.71875rem" }}
               >
-                hosted across 15+ countries
+                hosted from 15+ countries
               </p>
             </div>
           </div>
