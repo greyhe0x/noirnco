@@ -3,7 +3,7 @@ export const BRAND = {
   tagline: "Ghana, by Design.",
   description:
     "A program management and hospitality company specialising in structured, insight-driven experiences in Ghana for investors, businesses, and the diaspora.",
-  email: "noircorp.inc@gmail.com",
+  email: "experiences@noirandco.com.gh",
   phone: "+233 55 120 4941",
   phoneSec: "+233 026 944 1977",
   location: "Accra, Ghana",
