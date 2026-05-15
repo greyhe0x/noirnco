@@ -19,7 +19,7 @@ const STATS = [
   {
     value: 15,
     suffix: "+",
-    label: "Countries Served",
+    label: "Programs and Events Hosted",
     sub: "global reach, local expertise",
     featured: false,
   },
